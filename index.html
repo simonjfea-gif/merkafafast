@@ -380,8 +380,8 @@ let selectedPayment = 'nequi';
 let currentCat = 'all';
 let searchTerm = '';
 
-// TU URL DE SHEET.BEST
-const SHEET_BEST_URL = "https://api.sheetbest.com/sheets/48b1d4bd-0caf-4bd0-ad2e-27b193cee506";
+// ✅ URL CORREGIDA (sin la "e" de más)
+const SHEET_BEST_URL = "https://api.sheetbest.com/sheets/48b1d4bd-0caf-4bd0-ad2e-27b193ce506";
 
 // ==================== FUNCIONES BASE ====================
 function formatPrice(p){ return '$' + p.toLocaleString('es-CO'); }
@@ -499,7 +499,7 @@ function handleUpload(input){
   }
 }
 
-// ==================== FUNCIONES DE SHEET.BEST (CORREGIDAS) ====================
+// ==================== FUNCIONES DE SHEET.BEST ====================
 
 async function guardarPedidoEnSheet(orderData) {
   try {
@@ -526,7 +526,6 @@ async function cargarPedidosDesdeSheet() {
     if (!response.ok) throw new Error('Error al cargar');
     const data = await response.json();
     
-    // Convertir los datos de sheet.best al formato que espera el admin
     orders = data.map(row => ({
       id: row.id || '??',
       name: row.nombre || '',
@@ -555,34 +554,7 @@ async function cargarPedidosDesdeSheet() {
   }
 }
 
-async function actualizarEstadoEnSheet(id, nuevoEstado) {
-  try {
-    // Primero obtenemos todos los pedidos
-    const res = await fetch(SHEET_BEST_URL);
-    const pedidos = await res.json();
-    const pedido = pedidos.find(p => p.id === id);
-    if (!pedido) return false;
-    
-    pedido.estado = nuevoEstado;
-    
-    // sheet.best no tiene PUT fácil, así que hacemos DELETE y POST
-    // Primero encontrar el _id que sheet.best asigna automáticamente
-    if (pedido._id) {
-      await fetch(`${SHEET_BEST_URL}/${pedido._id}`, { method: 'DELETE' });
-    }
-    await fetch(SHEET_BEST_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pedido)
-    });
-    return true;
-  } catch (error) {
-    console.error('Error actualizando estado:', error);
-    return false;
-  }
-}
-
-// ==================== FUNCIONES PRINCIPALES MODIFICADAS ====================
+// ==================== FUNCIONES PRINCIPALES ====================
 
 async function submitOrder() {
   const name = document.getElementById('clientName').value.trim();
@@ -601,7 +573,6 @@ async function submitOrder() {
   const hora = now.toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'});
   const fecha = now.toLocaleDateString('es-CL');
   
-  // Preparar datos para sheet.best (CAMBIOS AQUÍ: usamos los títulos EXACTOS de tu hoja)
   const orderForSheet = {
     id: orderId,
     nombre: name,
@@ -621,7 +592,6 @@ async function submitOrder() {
     fecha: fecha
   };
   
-  // Guardar localmente también
   const localOrder = {
     id: orderId,
     name, phone, address,
@@ -635,22 +605,19 @@ async function submitOrder() {
   };
   orders.push(localOrder);
   
-  // Enviar a sheet.best
   const exito = await guardarPedidoEnSheet(orderForSheet);
   
   if (exito) {
-    alert('✅ Pedido guardado correctamente en Google Sheets');
+    alert('✅ ¡Pedido guardado correctamente en Google Sheets!');
   } else {
-    alert('⚠️ Pedido guardado localmente pero hubo error al guardar en Google Sheets. Revisa la conexión.');
+    alert('⚠️ Pedido guardado localmente pero hubo error en Google Sheets. Revisa los permisos de la hoja.');
   }
   
-  // Limpiar carrito y cerrar modal
   cart = [];
   updateCartBadge();
   document.getElementById('checkoutModal').classList.remove('active');
   document.getElementById('successModal').classList.add('active');
   
-  // Si el admin está abierto, actualizar vista
   if (document.getElementById('adminPanel').classList.contains('active')) {
     await cargarPedidosDesdeSheet();
   }
@@ -673,7 +640,6 @@ async function confirmOrder(id) {
   const order = orders.find(o => o.id === id);
   if(order && order.status === 'pending') {
     order.status = 'confirmed';
-    await actualizarEstadoEnSheet(id, 'confirmed');
     renderOrders();
     updateAdminStats();
   }
