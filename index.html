@@ -328,10 +328,25 @@ let currentCat = 'all';
 let searchTerm = '';
 let selectedFile = null;
 
-// TU NÚMERO DE WHATSAPP
 const ADMIN_WHATSAPP = "573007918978";
 
-// ==================== FUNCIONES ====================
+// ==================== FUNCIONES DE ALMACENAMIENTO LOCAL ====================
+function guardarPedidosLocal() {
+    localStorage.setItem('merkafast_orders', JSON.stringify(orders));
+}
+
+function cargarPedidosLocal() {
+    const guardados = localStorage.getItem('merkafast_orders');
+    if (guardados) {
+        orders = JSON.parse(guardados);
+    } else {
+        orders = [];
+    }
+    renderOrders();
+    updateAdminStats();
+}
+
+// ==================== FUNCIONES PRINCIPALES ====================
 function formatPrice(p){ return '$' + p.toLocaleString('es-CO'); }
 
 function renderProducts(){
@@ -443,6 +458,51 @@ function handleUpload(input){
   }
 }
 
+// Función para formatear el mensaje de WhatsApp como FACTURA
+function formatearMensajeFactura(name, phone, address, notes, payment, productos, subtotal, total) {
+    const fecha = new Date().toLocaleString('es-CO');
+    
+    let mensaje = `🏪 *MERKAFAST - NUEVO PEDIDO* 🏪%0a`;
+    mensaje += `%0a`;
+    mensaje += `📅 *Fecha:* ${fecha}%0a`;
+    mensaje += `%0a`;
+    mensaje += `━━━━━━━━━━━━━━━━━━━━%0a`;
+    mensaje += `👤 *DATOS DEL CLIENTE*%0a`;
+    mensaje += `━━━━━━━━━━━━━━━━━━━━%0a`;
+    mensaje += `*Nombre:* ${name}%0a`;
+    mensaje += `*Teléfono:* ${phone}%0a`;
+    mensaje += `*Dirección:* ${address}%0a`;
+    mensaje += `*Método de pago:* ${payment.toUpperCase()}%0a`;
+    if(notes) mensaje += `*Notas:* ${notes}%0a`;
+    mensaje += `%0a`;
+    mensaje += `━━━━━━━━━━━━━━━━━━━━%0a`;
+    mensaje += `🛍️ *PRODUCTOS*%0a`;
+    mensaje += `━━━━━━━━━━━━━━━━━━━━%0a`;
+    
+    productos.forEach((item, index) => {
+        mensaje += `${index+1}. ${item.name} x${item.qty} = ${formatPrice(item.price * item.qty)}%0a`;
+    });
+    
+    mensaje += `%0a`;
+    mensaje += `━━━━━━━━━━━━━━━━━━━━%0a`;
+    mensaje += `💰 *TOTALES*%0a`;
+    mensaje += `━━━━━━━━━━━━━━━━━━━━%0a`;
+    mensaje += `*Subtotal:* ${formatPrice(subtotal)}%0a`;
+    mensaje += `*Domicilio:* ${formatPrice(2500)}%0a`;
+    mensaje += `*TOTAL A PAGAR:* ${formatPrice(total)}%0a`;
+    mensaje += `%0a`;
+    mensaje += `━━━━━━━━━━━━━━━━━━━━%0a`;
+    mensaje += `📸 *IMPORTANTE*%0a`;
+    mensaje += `Adjunta la foto del comprobante de pago.%0a`;
+    mensaje += `%0a`;
+    mensaje += `✅ *Al enviar este mensaje, confirmas tu pedido.*%0a`;
+    mensaje += `🚚 *Tiempo estimado de entrega:* 30-45 minutos%0a`;
+    mensaje += `%0a`;
+    mensaje += `¡Gracias por preferir MerkaFast! 🚀`;
+    
+    return mensaje;
+}
+
 function submitOrder(){
   const name = document.getElementById('clientName').value.trim();
   const phone = document.getElementById('clientPhone').value.trim();
@@ -455,27 +515,21 @@ function submitOrder(){
   
   const subtotal = cart.reduce((a,b) => a + b.price * b.qty, 0);
   const total = subtotal + 2500;
-  const productosLista = cart.map(i => `• ${i.name} x${i.qty} = ${formatPrice(i.price * i.qty)}`).join('\n');
+  const productosLista = cart.map(i => ({ name: i.name, qty: i.qty, price: i.price }));
   
-  const mensaje = `🛒 *NUEVO PEDIDO MERKAFAST* 🛒
-%0a
-*Cliente:* ${name}
-*Teléfono:* ${phone}
-*Dirección:* ${address}
-*Método de pago:* ${selectedPayment.toUpperCase()}
-*Notas:* ${document.getElementById('clientNotes').value || 'Ninguna'}
-%0a
-*Productos:*
-${productosLista}
-%0a
-*Subtotal:* ${formatPrice(subtotal)}
-*Domicilio:* ${formatPrice(2500)}
-*TOTAL:* ${formatPrice(total)}
-%0a
-📸 *No olvides adjuntar la foto del comprobante de pago*`;
-
+  // Crear mensaje con formato de factura
+  const mensaje = formatearMensajeFactura(
+      name, phone, address, 
+      document.getElementById('clientNotes').value, 
+      selectedPayment, 
+      productosLista, 
+      subtotal, 
+      total
+  );
+  
   const whatsappURL = `https://wa.me/${ADMIN_WHATSAPP}?text=${mensaje}`;
   
+  // Guardar pedido en localStorage
   const newOrder = {
     id: 'MF-' + Date.now().toString().slice(-4),
     name, phone, address,
@@ -484,9 +538,11 @@ ${productosLista}
     items: [...cart],
     total: total,
     status: 'pending',
-    time: new Date().toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'})
+    time: new Date().toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'}),
+    date: new Date().toLocaleDateString('es-CO')
   };
   orders.unshift(newOrder);
+  guardarPedidosLocal();
   
   window.open(whatsappURL, '_blank');
   
@@ -538,7 +594,7 @@ function renderOrders(){
   container.innerHTML = orders.map(order => `
     <div class="order-card">
       <div class="order-header">
-        <span class="order-id">#${order.id} — ${order.time}</span>
+        <span class="order-id">#${order.id} — ${order.date} ${order.time}</span>
         <span class="order-status">${order.status === 'pending' ? '⏳ Pendiente' : '✅ Confirmado'}</span>
       </div>
       <div class="order-info">
@@ -551,7 +607,7 @@ function renderOrders(){
       </div>
       <div class="order-actions">
         ${order.status === 'pending' ? `<button class="btn-confirm" onclick="confirmOrder('${order.id}')">✅ Confirmar</button>` : ''}
-        <a class="btn-whatsapp" href="https://wa.me/${ADMIN_WHATSAPP}?text=Hola ${encodeURIComponent(order.name)}! Tu pedido #${order.id} está confirmado 🚚" target="_blank">💬 WhatsApp</a>
+        <a class="btn-whatsapp" href="https://wa.me/${ADMIN_WHATSAPP}?text=Hola ${encodeURIComponent(order.name)}! Tu pedido #${order.id} está confirmado y en camino 🚚" target="_blank">💬 WhatsApp</a>
       </div>
     </div>
   `).join('');
@@ -559,9 +615,16 @@ function renderOrders(){
 
 function confirmOrder(id){
   const order = orders.find(o => o.id === id);
-  if(order){ order.status = 'confirmed'; renderOrders(); updateAdminStats(); }
+  if(order){ 
+    order.status = 'confirmed'; 
+    guardarPedidosLocal();
+    renderOrders(); 
+    updateAdminStats(); 
+  }
 }
 
+// Inicializar: cargar pedidos guardados
+cargarPedidosLocal();
 renderProducts();
 </script>
 </body>
