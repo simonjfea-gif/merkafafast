@@ -12,111 +12,174 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
         }
 
+        /* Header */
         header {
-            background: #ff6b00;
+            background: linear-gradient(135deg, #ff6b00, #e05a00);
             color: white;
-            padding: 1rem;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
         }
 
+        .logo span {
+            font-size: 1.2rem;
+        }
+
         .cart-icon {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
             background: white;
             color: #ff6b00;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
         }
 
+        .cart-icon:hover {
+            transform: scale(1.05);
+        }
+
+        /* Productos */
         .products {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.8rem;
             padding: 2rem;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
         .product-card {
             background: white;
-            border-radius: 10px;
-            padding: 1rem;
+            border-radius: 15px;
+            padding: 1.2rem;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .product-emoji {
+            font-size: 3.5rem;
         }
 
         .product-card h3 {
-            margin: 0.5rem 0;
+            margin: 0.8rem 0 0.3rem;
+            color: #333;
+        }
+
+        .product-desc {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 0.5rem;
         }
 
         .price {
             color: #ff6b00;
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             font-weight: bold;
+            margin: 0.5rem 0;
         }
 
         button {
-            background: #ff6b00;
+            background: linear-gradient(135deg, #ff6b00, #e05a00);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
             cursor: pointer;
-            margin-top: 0.5rem;
+            font-weight: bold;
+            transition: all 0.2s;
         }
 
         button:hover {
-            background: #e05a00;
+            transform: scale(1.02);
+            opacity: 0.95;
         }
 
+        /* Panel Admin */
         .admin-panel {
             background: white;
             margin: 2rem;
             padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .admin-panel h2 {
             color: #ff6b00;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
             margin-bottom: 1rem;
+        }
+
+        .pedidos-hoy {
+            background: #ff6b0010;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+
+        .update-btn {
+            background: #333;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
         }
 
         #pedidos-lista {
             margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
         .pedido-item {
-            border-bottom: 1px solid #ddd;
-            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+            padding: 0.8rem;
             font-size: 0.9rem;
+            background: #fafafa;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
         }
 
+        /* Carrito lateral */
         .cart-sidebar {
             position: fixed;
-            right: -400px;
+            right: -450px;
             top: 0;
-            width: 350px;
+            width: 420px;
             height: 100%;
             background: white;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
-            transition: 0.3s;
-            z-index: 1000;
-            padding: 1rem;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+            transition: 0.3s ease;
+            z-index: 1001;
+            padding: 1.5rem;
             overflow-y: auto;
         }
 
@@ -124,74 +187,208 @@
             right: 0;
         }
 
-        .cart-sidebar h3 {
-            margin-bottom: 1rem;
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ff6b00;
+        }
+
+        .cart-header h3 {
+            color: #ff6b00;
         }
 
         .close-cart {
-            float: right;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            color: #999;
+        }
+
+        .cart-items-list {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
         }
 
         .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 0.5rem;
             padding: 0.5rem;
             background: #f9f9f9;
-            border-radius: 5px;
+            border-radius: 8px;
         }
 
-        .total {
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-price {
+            color: #ff6b00;
             font-weight: bold;
+        }
+
+        .remove-item {
+            background: #ff4444;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+
+        .cart-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: right;
+            margin: 1rem 0;
+            padding-top: 0.5rem;
+            border-top: 1px solid #ddd;
+        }
+
+        /* Formulario dentro del carrito */
+        .cart-form {
             margin-top: 1rem;
+        }
+
+        .cart-form label {
+            display: block;
+            font-weight: bold;
+            margin-top: 0.8rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .cart-form input, .cart-form select, .cart-form textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .cart-form textarea {
+            resize: vertical;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.3rem;
+        }
+
+        .radio-group label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: normal;
+            margin-top: 0;
         }
 
         .send-order {
             width: 100%;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            padding: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.open {
+            display: block;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">MerkaFast 🚀</div>
+    <div class="logo">MerkaFast 🚀 <span>Rápido y Confiable</span></div>
     <div class="cart-icon" onclick="toggleCart()">🛒 Carrito (<span id="cart-count">0</span>)</div>
 </header>
 
 <div class="products" id="products">
     <div class="product-card">
-        <h3>Producto 1</h3>
-        <p>Descripción breve</p>
-        <div class="price">$10.00</div>
-        <button onclick="addToCart('Producto 1', 10)">Añadir</button>
+        <div class="product-emoji">🥩</div>
+        <h3>Pechuga de Pollo</h3>
+        <div class="product-desc">1kg - Fresca</div>
+        <div class="price">$8.99</div>
+        <button onclick="addToCart('Pechuga de Pollo', 8.99)">Añadir</button>
     </div>
     <div class="product-card">
-        <h3>Producto 2</h3>
-        <p>Descripción breve</p>
-        <div class="price">$15.00</div>
-        <button onclick="addToCart('Producto 2', 15)">Añadir</button>
+        <div class="product-emoji">🍚</div>
+        <h3>Arroz Premium</h3>
+        <div class="product-desc">2kg - Grano largo</div>
+        <div class="price">$4.50</div>
+        <button onclick="addToCart('Arroz Premium', 4.50)">Añadir</button>
     </div>
     <div class="product-card">
-        <h3>Producto 3</h3>
-        <p>Descripción breve</p>
-        <div class="price">$20.00</div>
-        <button onclick="addToCart('Producto 3', 20)">Añadir</button>
+        <div class="product-emoji">🥦</div>
+        <h3>Brócoli orgánico</h3>
+        <div class="product-desc">500g - Fresco</div>
+        <div class="price">$3.20</div>
+        <button onclick="addToCart('Brócoli orgánico', 3.20)">Añadir</button>
+    </div>
+    <div class="product-card">
+        <div class="product-emoji">🧀</div>
+        <h3>Queso rallado</h3>
+        <div class="product-desc">400g - Mozzarella</div>
+        <div class="price">$5.99</div>
+        <button onclick="addToCart('Queso rallado', 5.99)">Añadir</button>
     </div>
 </div>
 
+<!-- Panel de administración -->
 <div class="admin-panel">
-    <h2>📊 Panel MerkaFast</h2>
-    <p>Pedidos recibidos hoy: <strong id="pedidos-hoy">0</strong></p>
-    <button onclick="cargarPedidos()">🔄 Actualizar pedidos</button>
+    <div class="admin-header">
+        <h2>📊 Panel MerkaFast</h2>
+        <div class="pedidos-hoy">📦 Pedidos hoy: <strong id="pedidos-hoy">0</strong></div>
+        <button class="update-btn" onclick="cargarPedidos()">🔄 Actualizar</button>
+    </div>
     <div id="pedidos-lista"></div>
 </div>
 
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+<!-- Carrito lateral con formulario -->
 <div class="cart-sidebar" id="cart-sidebar">
-    <span class="close-cart" onclick="toggleCart()">✖</span>
-    <h3>Tu Carrito</h3>
-    <div id="cart-items"></div>
-    <div class="total">Total: $<span id="cart-total">0</span></div>
+    <div class="cart-header">
+        <h3>🛍️ Tu Pedido</h3>
+        <span class="close-cart" onclick="toggleCart()">✖</span>
+    </div>
+    <div class="cart-items-list" id="cart-items-list"></div>
+    <div class="cart-total">Total: $<span id="cart-total">0</span></div>
+    
+    <div class="cart-form">
+        <label>👤 Nombre completo *</label>
+        <input type="text" id="cliente-nombre" placeholder="Ej: Juan Pérez">
+        
+        <label>📍 Dirección *</label>
+        <input type="text" id="cliente-direccion" placeholder="Calle, número, ciudad">
+        
+        <label>📞 Teléfono *</label>
+        <input type="tel" id="cliente-telefono" placeholder="Ej: 809-555-1234">
+        
+        <label>💳 Método de pago</label>
+        <div class="radio-group">
+            <label><input type="radio" name="pago" value="Efectivo" checked> Efectivo</label>
+            <label><input type="radio" name="pago" value="Transferencia"> Transferencia</label>
+        </div>
+        
+        <label>📝 Observaciones (opcional)</label>
+        <textarea id="cliente-obs" rows="2" placeholder="Piso, puerta, instrucciones..."></textarea>
+    </div>
+    
     <button class="send-order" onclick="enviarPedido()">✅ Confirmar Pedido</button>
 </div>
 
@@ -204,7 +401,7 @@
     }
 
     function actualizarCarritoUI() {
-        const cartItemsDiv = document.getElementById('cart-items');
+        const cartItemsDiv = document.getElementById('cart-items-list');
         const cartTotalSpan = document.getElementById('cart-total');
         const cartCountSpan = document.getElementById('cart-count');
 
@@ -214,12 +411,15 @@
             total += item.precio;
             cartItemsDiv.innerHTML += `
                 <div class="cart-item">
-                    ${item.nombre} - $${item.precio}
-                    <button onclick="eliminarDelCarrito(${index})">❌</button>
+                    <div class="cart-item-info">
+                        ${item.nombre}<br>
+                        <span class="cart-item-price">$${item.precio}</span>
+                    </div>
+                    <button class="remove-item" onclick="eliminarDelCarrito(${index})">❌</button>
                 </div>
             `;
         });
-        cartTotalSpan.innerText = total;
+        cartTotalSpan.innerText = total.toFixed(2);
         cartCountSpan.innerText = carrito.length;
     }
 
@@ -230,9 +430,9 @@
 
     function toggleCart() {
         document.getElementById('cart-sidebar').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('open');
     }
 
-    // ⭐⭐⭐ TU URL DE SHEET.BEST (ya la pongo yo por ti) ⭐⭐⭐
     const SHEET_BEST_URL = "https://api.sheetbest.com/sheets/48b1d4bd-0caf-4bd0-ad2e-27b193cee506";
 
     function enviarPedido() {
@@ -241,9 +441,25 @@
             return;
         }
 
+        const nombre = document.getElementById('cliente-nombre').value.trim();
+        const direccion = document.getElementById('cliente-direccion').value.trim();
+        const telefono = document.getElementById('cliente-telefono').value.trim();
+        const pago = document.querySelector('input[name="pago"]:checked').value;
+        const observaciones = document.getElementById('cliente-obs').value.trim();
+
+        if (!nombre || !direccion || !telefono) {
+            alert("❌ Por favor, completa tu nombre, dirección y teléfono");
+            return;
+        }
+
         const pedido = {
             fecha: new Date().toLocaleString(),
-            total: carrito.reduce((sum, item) => sum + item.precio, 0),
+            cliente: nombre,
+            direccion: direccion,
+            telefono: telefono,
+            pago: pago,
+            observaciones: observaciones,
+            total: carrito.reduce((sum, item) => sum + item.precio, 0).toFixed(2),
             productos: JSON.stringify(carrito),
             items: carrito.length
         };
@@ -260,6 +476,10 @@
                 actualizarCarritoUI();
                 toggleCart();
                 cargarPedidos();
+                document.getElementById('cliente-nombre').value = '';
+                document.getElementById('cliente-direccion').value = '';
+                document.getElementById('cliente-telefono').value = '';
+                document.getElementById('cliente-obs').value = '';
             } else {
                 alert("⚠️ Error al enviar. Revisa la URL de sheet.best");
             }
@@ -278,16 +498,21 @@
             const hoyDiv = document.getElementById('pedidos-hoy');
             
             if (!data || data.length === 0) {
-                pedidosDiv.innerHTML = "<p>No hay pedidos aún</p>";
+                pedidosDiv.innerHTML = "<p>✨ No hay pedidos aún. ¡El primero será tuyo!</p>";
                 hoyDiv.innerText = "0";
                 return;
             }
 
-            pedidosDiv.innerHTML = "<h3>Últimos pedidos:</h3>";
+            pedidosDiv.innerHTML = "<h3>📋 Últimos pedidos recibidos:</h3>";
             data.slice(-10).reverse().forEach(pedido => {
                 pedidosDiv.innerHTML += `
                     <div class="pedido-item">
-                        📅 ${pedido.fecha} | 🛍️ ${pedido.items} productos | 💰 $${pedido.total}
+                        <strong>📅 ${pedido.fecha}</strong><br>
+                        👤 ${pedido.cliente} | 📞 ${pedido.telefono}<br>
+                        📍 ${pedido.direccion}<br>
+                        💰 Total: $${pedido.total} | 🛍️ ${pedido.items} productos<br>
+                        💳 Pago: ${pedido.pago}
+                        ${pedido.observaciones ? `📝 Nota: ${pedido.observaciones}` : ''}
                     </div>
                 `;
             });
@@ -298,7 +523,7 @@
         })
         .catch(error => {
             console.error("Error cargando pedidos:", error);
-            document.getElementById('pedidos-lista').innerHTML = "<p>Error al cargar pedidos</p>";
+            document.getElementById('pedidos-lista').innerHTML = "<p>⚠️ Error al cargar pedidos. Verifica tu conexión.</p>";
         });
     }
 
