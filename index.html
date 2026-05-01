@@ -1,608 +1,308 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MerkaFast – Sasaima</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
-<style>
-:root {
-  --red: #e8191b;
-  --red-dark: #b81416;
-  --green: #1a7c2f;
-  --green-light: #25a843;
-  --green-pale: #e8f5ec;
-  --white: #ffffff;
-  --gray: #f4f4f4;
-  --gray2: #e0e0e0;
-  --dark: #1a1a1a;
-  --text: #333333;
-  --text2: #666666;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:'Nunito',sans-serif;background:var(--gray);color:var(--text);}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MerkaFast - Tu tienda rápida</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* ── TOPBAR ── */
-.topbar{background:var(--green);color:white;text-align:center;padding:0.4rem;font-size:0.78rem;font-weight:700;letter-spacing:0.05em;}
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
 
-/* ── NAVBAR ── */
-nav{background:white;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.1);}
-.nav-inner{max-width:1300px;margin:0 auto;padding:0.8rem 1.5rem;display:flex;align-items:center;gap:1rem;}
-.logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;}
-.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--red),var(--red-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
-.logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;line-height:1;color:var(--dark);}
-.logo-text span{color:var(--red);}
-.search-bar{flex:1;display:flex;background:var(--gray);border-radius:50px;overflow:hidden;border:2px solid var(--gray2);transition:border-color 0.3s;}
-.search-bar:focus-within{border-color:var(--green);}
-.search-bar input{flex:1;border:none;background:transparent;padding:0.6rem 1rem;font-family:'Nunito',sans-serif;font-size:0.9rem;outline:none;}
-.search-bar button{background:var(--green);border:none;color:white;padding:0.6rem 1.2rem;cursor:pointer;font-size:1rem;}
-.nav-actions{display:flex;gap:0.8rem;align-items:center;}
-.cart-btn{position:relative;background:var(--red);color:white;border:none;padding:0.6rem 1.2rem;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;display:flex;align-items:center;gap:0.4rem;transition:background 0.3s;}
-.cart-btn:hover{background:var(--red-dark);}
-.cart-badge{position:absolute;top:-6px;right:-6px;background:var(--green);color:white;border-radius:50%;width:20px;height:20px;font-size:0.65rem;font-weight:900;display:flex;align-items:center;justify-content:center;}
-.delivery-badge{background:var(--green-pale);color:var(--green);padding:0.4rem 0.8rem;border-radius:50px;font-size:0.78rem;font-weight:700;}
+        header {
+            background: #ff6b00;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-/* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--green-dark,#145a22) 0%,var(--green) 50%,var(--red) 100%);color:white;padding:3rem 1.5rem;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:'🛒';position:absolute;font-size:15rem;opacity:0.05;right:-2rem;top:-2rem;}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,5rem);line-height:1;margin-bottom:0.5rem;}
-.hero p{font-size:1.1rem;opacity:0.9;margin-bottom:1.5rem;}
-.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;}
-.hero-pill{background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);padding:0.4rem 1rem;border-radius:50px;font-size:0.8rem;font-weight:700;}
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-/* ── CATEGORIES ── */
-.categories{background:white;padding:1rem 1.5rem;border-bottom:2px solid var(--gray2);}
-.cat-scroll{display:flex;gap:0.8rem;overflow-x:auto;padding-bottom:0.5rem;scrollbar-width:none;}
-.cat-scroll::-webkit-scrollbar{display:none;}
-.cat-btn{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 1rem;border-radius:12px;border:2px solid var(--gray2);background:white;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;}
-.cat-btn:hover,.cat-btn.active{border-color:var(--green);background:var(--green-pale);}
-.cat-btn span:first-child{font-size:1.5rem;}
-.cat-btn span:last-child{font-size:0.72rem;font-weight:700;color:var(--text2);}
-.cat-btn.active span:last-child{color:var(--green);}
+        .cart-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: white;
+            color: #ff6b00;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
 
-/* ── SECTION ── */
-.section{max-width:1300px;margin:0 auto;padding:2rem 1.5rem;}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--dark);}
-.section-title span{color:var(--red);}
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-/* ── PRODUCTS GRID ── */
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;}
-.product-card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;cursor:pointer;}
-.product-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.12);}
-.product-img{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--gray);display:flex;align-items:center;justify-content:center;font-size:4rem;}
-.product-img.emoji{padding:1.5rem;}
-.product-info{padding:0.8rem;}
-.product-name{font-weight:800;font-size:0.85rem;color:var(--dark);margin-bottom:0.2rem;line-height:1.3;}
-.product-unit{font-size:0.72rem;color:var(--text2);margin-bottom:0.5rem;}
-.product-bottom{display:flex;align-items:center;justify-content:space-between;}
-.product-price{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--green);}
-.add-btn{background:var(--red);color:white;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s;font-weight:900;}
-.add-btn:hover{background:var(--red-dark);}
-.product-tag{display:inline-block;background:var(--green-pale);color:var(--green);font-size:0.65rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:50px;margin-bottom:0.4rem;}
-.product-tag.oferta{background:#fff3e0;color:#e65c00;}
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-/* ── BANNER ── */
-.banner{background:linear-gradient(135deg,var(--red),var(--red-dark));color:white;border-radius:20px;padding:2rem;margin:0 1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;overflow:hidden;position:relative;}
-.banner::after{content:'🚀';position:absolute;right:1rem;font-size:6rem;opacity:0.15;}
-.banner h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;margin-bottom:0.3rem;}
-.banner p{font-size:0.9rem;opacity:0.9;}
-.banner-btn{background:white;color:var(--red);padding:0.7rem 1.5rem;border-radius:50px;font-weight:800;text-decoration:none;font-size:0.85rem;white-space:nowrap;}
+        .product-card h3 {
+            margin: 0.5rem 0;
+        }
 
-/* ── CART DRAWER ── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;}
-.overlay.active{display:block;}
-.cart-drawer{position:fixed;right:0;top:0;bottom:0;width:min(420px,100vw);background:white;z-index:201;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;}
-.cart-drawer.active{transform:translateX(0);}
-.cart-header{padding:1.2rem 1.5rem;border-bottom:2px solid var(--gray2);display:flex;align-items:center;justify-content:space-between;}
-.cart-header h2{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;}
-.close-btn{background:var(--gray);border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.1rem;}
-.cart-items{flex:1;overflow-y:auto;padding:1rem 1.5rem;}
-.cart-item{display:flex;gap:1rem;align-items:center;padding:0.8rem 0;border-bottom:1px solid var(--gray2);}
-.cart-item-emoji{font-size:2.5rem;width:50px;text-align:center;flex-shrink:0;}
-.cart-item-info{flex:1;}
-.cart-item-name{font-weight:800;font-size:0.9rem;}
-.cart-item-price{color:var(--green);font-weight:700;font-size:0.85rem;}
-.cart-item-qty{display:flex;align-items:center;gap:0.5rem;margin-top:0.3rem;}
-.qty-btn{background:var(--gray2);border:none;width:26px;height:26px;border-radius:50%;cursor:pointer;font-weight:900;font-size:0.9rem;}
-.qty-num{font-weight:800;font-size:0.9rem;min-width:20px;text-align:center;}
-.cart-empty{text-align:center;padding:3rem 1rem;color:var(--text2);}
-.cart-empty .empty-icon{font-size:4rem;margin-bottom:1rem;}
-.cart-footer{padding:1.5rem;border-top:2px solid var(--gray2);}
-.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
-.cart-total span:first-child{font-size:1rem;color:var(--text2);}
-.cart-total span:last-child{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--green);}
-.checkout-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--green-light));color:white;border:none;padding:1rem;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:opacity 0.2s;}
-.checkout-btn:hover{opacity:0.9;}
+        .price {
+            color: #ff6b00;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
 
-/* ── CHECKOUT MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;justify-content:center;align-items:flex-end;}
-.modal-overlay.active{display:flex;}
-.modal{background:white;width:min(500px,100vw);border-radius:24px 24px 0 0;padding:2rem;max-height:90vh;overflow-y:auto;animation:slideUp 0.3s ease;}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal h2{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;margin-bottom:1.5rem;color:var(--dark);}
-.form-group{margin-bottom:1.2rem;}
-.form-group label{display:block;font-weight:800;font-size:0.85rem;margin-bottom:0.4rem;color:var(--dark);}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:0.8rem 1rem;border:2px solid var(--gray2);border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.3s;}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--green);}
-.payment-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:1.2rem;}
-.payment-opt{border:2px solid var(--gray2);border-radius:12px;padding:0.8rem;text-align:center;cursor:pointer;transition:all 0.2s;}
-.payment-opt:hover,.payment-opt.active{border-color:var(--green);background:var(--green-pale);}
-.payment-opt .pay-icon{font-size:1.5rem;display:block;margin-bottom:0.3rem;}
-.payment-opt span:last-child{font-size:0.72rem;font-weight:800;color:var(--text2);}
-.payment-opt.active span:last-child{color:var(--green);}
-.upload-area{border:2px dashed var(--gray2);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.3s;}
-.upload-area:hover,.upload-area.has-file{border-color:var(--green);background:var(--green-pale);}
-.upload-area input{display:none;}
-.upload-icon{font-size:2rem;margin-bottom:0.5rem;}
-.upload-text{font-size:0.85rem;color:var(--text2);font-weight:600;}
-.domicilio-info{background:var(--green-pale);border-radius:12px;padding:1rem;margin-bottom:1.2rem;font-size:0.85rem;}
-.domicilio-info strong{color:var(--green);}
-.submit-order{width:100%;background:linear-gradient(135deg,var(--red),var(--red-dark));color:white;border:none;padding:1.1rem;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;margin-top:0.5rem;}
+        button {
+            background: #ff6b00;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
 
-/* ── SUCCESS ── */
-.success-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;justify-content:center;align-items:center;}
-.success-modal.active{display:flex;}
-.success-box{background:white;border-radius:24px;padding:3rem 2rem;text-align:center;max-width:360px;width:90%;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
-@keyframes popIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
-.success-icon{font-size:5rem;margin-bottom:1rem;}
-.success-box h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--green);margin-bottom:0.5rem;}
-.success-box p{color:var(--text2);font-size:0.9rem;line-height:1.6;}
-.success-close{margin-top:1.5rem;background:var(--green);color:white;border:none;padding:0.8rem 2rem;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:0.9rem;}
+        button:hover {
+            background: #e05a00;
+        }
 
-/* ── ADMIN PANEL ── */
-.admin-toggle{position:fixed;bottom:1.5rem;left:1.5rem;background:var(--dark);color:white;border:none;padding:0.7rem 1.2rem;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.8rem;z-index:99;box-shadow:0 4px 15px rgba(0,0,0,0.3);}
-.admin-panel{display:none;position:fixed;inset:0;background:var(--dark);z-index:500;overflow-y:auto;}
-.admin-panel.active{display:block;}
-.admin-header{background:var(--green);color:white;padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;}
-.admin-header h2{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;}
-.admin-close{background:rgba(255,255,255,0.2);border:none;color:white;padding:0.5rem 1rem;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;}
-.admin-body{padding:1.5rem;max-width:900px;margin:0 auto;}
-.admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem;}
-.stat-card{background:#1e1e1e;border-radius:16px;padding:1.2rem;}
-.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--green);}
-.stat-label{font-size:0.78rem;color:#888;font-weight:700;}
-.orders-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:white;margin-bottom:1rem;}
-.order-card{background:#1e1e1e;border-radius:16px;padding:1.2rem;margin-bottom:1rem;border-left:4px solid var(--green);}
-.order-card.pending{border-left-color:var(--red);}
-.order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;}
-.order-id{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:white;}
-.order-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.72rem;font-weight:800;}
-.status-pending{background:rgba(232,25,27,0.2);color:var(--red);}
-.status-confirmed{background:rgba(26,124,47,0.2);color:var(--green-light);}
-.order-info{font-size:0.82rem;color:#aaa;margin-bottom:0.8rem;line-height:1.6;}
-.order-info strong{color:white;}
-.order-actions{display:flex;gap:0.5rem;}
-.btn-confirm{background:var(--green);color:white;border:none;padding:0.5rem 1rem;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.78rem;}
-.btn-whatsapp{background:#25D366;color:white;border:none;padding:0.5rem 1rem;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.78rem;text-decoration:none;display:inline-block;}
-.no-orders{text-align:center;color:#555;padding:3rem;font-size:0.9rem;}
+        .admin-panel {
+            background: white;
+            margin: 2rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-/* ── FOOTER ── */
-footer{background:var(--dark);color:white;padding:2rem 1.5rem;text-align:center;margin-top:3rem;}
-footer .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--green);margin-bottom:0.5rem;}
-footer p{font-size:0.82rem;color:#888;}
+        .admin-panel h2 {
+            color: #ff6b00;
+            margin-bottom: 1rem;
+        }
 
-@media(max-width:600px){
-  .nav-inner{flex-wrap:wrap;gap:0.5rem;}
-  .search-bar{order:3;width:100%;}
-  .delivery-badge{display:none;}
-  .products-grid{grid-template-columns:repeat(2,1fr);}
-  .payment-options{grid-template-columns:1fr 1fr 1fr;}
-  .banner{flex-direction:column;gap:1rem;text-align:center;}
-  .banner::after{display:none;}
-}
-</style>
+        #pedidos-lista {
+            margin-top: 1rem;
+        }
+
+        .pedido-item {
+            border-bottom: 1px solid #ddd;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 350px;
+            height: 100%;
+            background: white;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            z-index: 1000;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-sidebar h3 {
+            margin-bottom: 1rem;
+        }
+
+        .close-cart {
+            float: right;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .cart-item {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .total {
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .send-order {
+            width: 100%;
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
 
-<div class="topbar">🚚 Domicilios a Sasaima y veredas · Paga con Nequi, Daviplata o Bancolombia</div>
+<header>
+    <div class="logo">MerkaFast 🚀</div>
+    <div class="cart-icon" onclick="toggleCart()">🛒 Carrito (<span id="cart-count">0</span>)</div>
+</header>
 
-<nav>
-  <div class="nav-inner">
-    <a href="#" class="logo">
-      <div class="logo-icon">🛒</div>
-      <div class="logo-text">Merka<span>Fast</span></div>
-    </a>
-    <div class="search-bar">
-      <input type="text" placeholder="Buscar productos..." id="searchInput" oninput="searchProducts()"/>
-      <button>🔍</button>
+<div class="products" id="products">
+    <div class="product-card">
+        <h3>Producto 1</h3>
+        <p>Descripción breve</p>
+        <div class="price">$10.00</div>
+        <button onclick="addToCart('Producto 1', 10)">Añadir</button>
     </div>
-    <span class="delivery-badge">📍 Sasaima</span>
-    <button class="cart-btn" onclick="openCart()">
-      🛒 Carrito
-      <span class="cart-badge" id="cartBadge">0</span>
-    </button>
-  </div>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-  <h1>Tu Mercado<br/>A Un Clic 🛒</h1>
-  <p>Pide desde casa y recibe en Sasaima y veredas</p>
-  <div class="hero-pills">
-    <span class="hero-pill">🥛 Lácteos</span>
-    <span class="hero-pill">🍺 Cervezas</span>
-    <span class="hero-pill">🥦 Verduras</span>
-    <span class="hero-pill">🍗 Carnes</span>
-    <span class="hero-pill">🛒 Abarrotes</span>
-  </div>
+    <div class="product-card">
+        <h3>Producto 2</h3>
+        <p>Descripción breve</p>
+        <div class="price">$15.00</div>
+        <button onclick="addToCart('Producto 2', 15)">Añadir</button>
+    </div>
+    <div class="product-card">
+        <h3>Producto 3</h3>
+        <p>Descripción breve</p>
+        <div class="price">$20.00</div>
+        <button onclick="addToCart('Producto 3', 20)">Añadir</button>
+    </div>
 </div>
 
-<!-- CATEGORIES -->
-<div class="categories">
-  <div class="cat-scroll">
-    <button class="cat-btn active" onclick="filterCat('all',this)"><span>🏪</span><span>Todo</span></button>
-    <button class="cat-btn" onclick="filterCat('lacteos',this)"><span>🥛</span><span>Lácteos</span></button>
-    <button class="cat-btn" onclick="filterCat('bebidas',this)"><span>🍺</span><span>Bebidas</span></button>
-    <button class="cat-btn" onclick="filterCat('verduras',this)"><span>🥦</span><span>Verduras</span></button>
-    <button class="cat-btn" onclick="filterCat('frutas',this)"><span>🍎</span><span>Frutas</span></button>
-    <button class="cat-btn" onclick="filterCat('carnes',this)"><span>🍗</span><span>Carnes</span></button>
-    <button class="cat-btn" onclick="filterCat('abarrotes',this)"><span>🛒</span><span>Abarrotes</span></button>
-    <button class="cat-btn" onclick="filterCat('snacks',this)"><span>🍿</span><span>Snacks</span></button>
-    <button class="cat-btn" onclick="filterCat('aseo',this)"><span>🧴</span><span>Aseo</span></button>
-  </div>
+<div class="admin-panel">
+    <h2>📊 Panel MerkaFast</h2>
+    <p>Pedidos recibidos hoy: <strong id="pedidos-hoy">0</strong></p>
+    <button onclick="cargarPedidos()">🔄 Actualizar pedidos</button>
+    <div id="pedidos-lista"></div>
 </div>
 
-<!-- BANNER -->
-<div class="banner" style="margin-top:1.5rem;">
-  <div>
-    <h2>🔥 Ofertas del Día</h2>
-    <p>Descuentos especiales en productos seleccionados</p>
-  </div>
-  <a href="#" class="banner-btn" onclick="filterCat('all',document.querySelector('.cat-btn'));return false;">Ver Ofertas</a>
-</div>
-
-<!-- PRODUCTS -->
-<div class="section">
-  <div class="section-header">
-    <h2 class="section-title">Nuestros <span>Productos</span></h2>
-  </div>
-  <div class="products-grid" id="productsGrid"></div>
-</div>
-
-<footer>
-  <div class="footer-logo">MerkaFast</div>
-  <p>Sasaima, Cundinamarca · Domicilios disponibles</p>
-  <p style="margin-top:0.5rem;">📱 WhatsApp: 300 000 0000</p>
-</footer>
-
-<!-- CART DRAWER -->
-<div class="overlay" id="overlay" onclick="closeCart()"></div>
-<div class="cart-drawer" id="cartDrawer">
-  <div class="cart-header">
-    <h2>🛒 Mi Carrito</h2>
-    <button class="close-btn" onclick="closeCart()">✕</button>
-  </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer">
-    <div class="cart-total">
-      <span>Total a pagar:</span>
-      <span id="cartTotal">$0</span>
-    </div>
-    <button class="checkout-btn" onclick="openCheckout()">Continuar con el pedido →</button>
-  </div>
-</div>
-
-<!-- CHECKOUT MODAL -->
-<div class="modal-overlay" id="checkoutModal">
-  <div class="modal">
-    <h2>📦 Finalizar Pedido</h2>
-    <div class="form-group">
-      <label>👤 Nombre completo</label>
-      <input type="text" id="clientName" placeholder="Ej: Juan García"/>
-    </div>
-    <div class="form-group">
-      <label>📱 WhatsApp</label>
-      <input type="tel" id="clientPhone" placeholder="Ej: 3001234567"/>
-    </div>
-    <div class="form-group">
-      <label>📍 Dirección de entrega</label>
-      <input type="text" id="clientAddress" placeholder="Ej: Calle 5 # 3-20, Vereda El Triunfo"/>
-    </div>
-    <div class="form-group">
-      <label>📝 Indicaciones adicionales</label>
-      <textarea id="clientNotes" rows="2" placeholder="Ej: Casa con portón rojo, entregar antes de las 6pm"></textarea>
-    </div>
-    <div class="form-group">
-      <label>💳 Método de pago</label>
-      <div class="payment-options">
-        <div class="payment-opt active" onclick="selectPayment(this,'nequi')">
-          <span class="pay-icon">💜</span><span>Nequi</span>
-        </div>
-        <div class="payment-opt" onclick="selectPayment(this,'daviplata')">
-          <span class="pay-icon">🔴</span><span>Daviplata</span>
-        </div>
-        <div class="payment-opt" onclick="selectPayment(this,'bancolombia')">
-          <span class="pay-icon">🟡</span><span>Bancolombia</span>
-        </div>
-      </div>
-    </div>
-    <div class="domicilio-info">
-      🚚 <strong>Domicilio:</strong> $2.500 — Entrega estimada: 30-45 minutos
-    </div>
-    <div class="form-group">
-      <label>📸 Comprobante de pago</label>
-      <div class="upload-area" id="uploadArea" onclick="document.getElementById('comprobante').click()">
-        <input type="file" id="comprobante" accept="image/*" onchange="handleUpload(this)"/>
-        <div class="upload-icon">📷</div>
-        <div class="upload-text">Toca para subir la foto del comprobante</div>
-      </div>
-    </div>
-    <button class="submit-order" onclick="submitOrder()">✅ Confirmar Pedido</button>
-  </div>
-</div>
-
-<!-- SUCCESS -->
-<div class="success-modal" id="successModal">
-  <div class="success-box">
-    <div class="success-icon">🎉</div>
-    <h2>¡Pedido Enviado!</h2>
-    <p>Tu pedido fue recibido. El administrador verificará tu pago y un domiciliario llevará tu pedido.</p>
-    <p style="margin-top:0.8rem;font-weight:700;color:var(--green);">Tiempo estimado: 30-45 minutos</p>
-    <button class="success-close" onclick="closeSuccess()">¡Perfecto!</button>
-  </div>
-</div>
-
-<!-- ADMIN PANEL -->
-<button class="admin-toggle" onclick="openAdmin()">⚙️ Admin</button>
-<div class="admin-panel" id="adminPanel">
-  <div class="admin-header">
-    <h2>⚙️ Panel MerkaFast</h2>
-    <button class="admin-close" onclick="closeAdmin()">✕ Cerrar</button>
-  </div>
-  <div class="admin-body">
-    <div class="admin-stats">
-      <div class="stat-card">
-        <div class="stat-num" id="statTotal">0</div>
-        <div class="stat-label">Pedidos Hoy</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="statPending">0</div>
-        <div class="stat-label">Pendientes</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="statRevenue">$0</div>
-        <div class="stat-label">Ingresos</div>
-      </div>
-    </div>
-    <div class="orders-title">📋 Pedidos Recibidos</div>
-    <div id="ordersList"><div class="no-orders">No hay pedidos aún 📭</div></div>
-  </div>
+<div class="cart-sidebar" id="cart-sidebar">
+    <span class="close-cart" onclick="toggleCart()">✖</span>
+    <h3>Tu Carrito</h3>
+    <div id="cart-items"></div>
+    <div class="total">Total: $<span id="cart-total">0</span></div>
+    <button class="send-order" onclick="enviarPedido()">✅ Confirmar Pedido</button>
 </div>
 
 <script>
-// ── PRODUCTS DATA ──
-const products = [
-  {id:1,name:'Leche Entera 1L',price:3200,emoji:'🥛',cat:'lacteos',unit:'Por litro',tag:''},
-  {id:2,name:'Yogurt Alpina 200g',price:2500,emoji:'🍶',cat:'lacteos',unit:'Por unidad',tag:'oferta'},
-  {id:3,name:'Queso Campesino 250g',price:5800,emoji:'🧀',cat:'lacteos',unit:'Por bloque',tag:''},
-  {id:4,name:'Mantequilla 250g',price:6500,emoji:'🧈',cat:'lacteos',unit:'Por barra',tag:''},
-  {id:5,name:'Cerveza Club Colombia',price:3500,emoji:'🍺',cat:'bebidas',unit:'Por botella 330ml',tag:''},
-  {id:6,name:'Cerveza Águila',price:2800,emoji:'🍺',cat:'bebidas',unit:'Por lata 330ml',tag:'oferta'},
-  {id:7,name:'Gaseosa Coca-Cola 2L',price:5200,emoji:'🥤',cat:'bebidas',unit:'Por botella',tag:''},
-  {id:8,name:'Agua Cristal 600ml',price:1800,emoji:'💧',cat:'bebidas',unit:'Por botella',tag:''},
-  {id:9,name:'Jugo Hit 1L',price:4200,emoji:'🧃',cat:'bebidas',unit:'Por caja',tag:''},
-  {id:10,name:'Tomate Chonto',price:2500,emoji:'🍅',cat:'verduras',unit:'Por kilo',tag:''},
-  {id:11,name:'Papa Pastusa',price:1800,emoji:'🥔',cat:'verduras',unit:'Por kilo',tag:'oferta'},
-  {id:12,name:'Cebolla Cabezona',price:3000,emoji:'🧅',cat:'verduras',unit:'Por kilo',tag:''},
-  {id:13,name:'Zanahoria',price:2200,emoji:'🥕',cat:'verduras',unit:'Por kilo',tag:''},
-  {id:14,name:'Plátano Maduro',price:1500,emoji:'🍌',cat:'frutas',unit:'Por unidad',tag:''},
-  {id:15,name:'Naranja Valenciana',price:3000,emoji:'🍊',cat:'frutas',unit:'Por kilo',tag:''},
-  {id:16,name:'Mango Tommy',price:2500,emoji:'🥭',cat:'frutas',unit:'Por unidad',tag:'oferta'},
-  {id:17,name:'Banano',price:800,emoji:'🍌',cat:'frutas',unit:'Por unidad',tag:''},
-  {id:18,name:'Pechuga de Pollo',price:12000,emoji:'🍗',cat:'carnes',unit:'Por kilo',tag:''},
-  {id:19,name:'Carne de Res Molida',price:15000,emoji:'🥩',cat:'carnes',unit:'Por kilo',tag:''},
-  {id:20,name:'Costilla de Cerdo',price:13000,emoji:'🍖',cat:'carnes',unit:'Por kilo',tag:''},
-  {id:21,name:'Arroz Diana 1kg',price:4200,emoji:'🍚',cat:'abarrotes',unit:'Por kilo',tag:''},
-  {id:22,name:'Aceite Palma 1L',price:8500,emoji:'🫙',cat:'abarrotes',unit:'Por litro',tag:''},
-  {id:23,name:'Azúcar 1kg',price:3800,emoji:'🍬',cat:'abarrotes',unit:'Por kilo',tag:''},
-  {id:24,name:'Frijol Bola Roja 500g',price:4500,emoji:'🫘',cat:'abarrotes',unit:'Por paquete',tag:''},
-  {id:25,name:'Huevos x12',price:9500,emoji:'🥚',cat:'abarrotes',unit:'Por docena',tag:'oferta'},
-  {id:26,name:'Sal 1kg',price:1500,emoji:'🧂',cat:'abarrotes',unit:'Por kilo',tag:''},
-  {id:27,name:'Papas Margarita',price:2800,emoji:'🍿',cat:'snacks',unit:'Por paquete',tag:''},
-  {id:28,name:'Chocolatina Jet',price:1200,emoji:'🍫',cat:'snacks',unit:'Por unidad',tag:''},
-  {id:29,name:'Detergente Ariel 1kg',price:12000,emoji:'🧴',cat:'aseo',unit:'Por kilo',tag:''},
-  {id:30,name:'Jabón Rey',price:3500,emoji:'🧼',cat:'aseo',unit:'Por barra',tag:''},
-];
+    let carrito = [];
 
-let cart = [];
-let orders = [];
-let selectedPayment = 'nequi';
-let currentCat = 'all';
-let searchTerm = '';
+    function addToCart(nombre, precio) {
+        carrito.push({ nombre, precio });
+        actualizarCarritoUI();
+    }
 
-function formatPrice(p){ return '$' + p.toLocaleString('es-CO'); }
+    function actualizarCarritoUI() {
+        const cartItemsDiv = document.getElementById('cart-items');
+        const cartTotalSpan = document.getElementById('cart-total');
+        const cartCountSpan = document.getElementById('cart-count');
 
-function renderProducts(){
-  const grid = document.getElementById('productsGrid');
-  const filtered = products.filter(p => {
-    const matchCat = currentCat === 'all' || p.cat === currentCat;
-    const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchCat && matchSearch;
-  });
-  if(!filtered.length){ grid.innerHTML = '<p style="color:#888;text-align:center;padding:2rem;grid-column:1/-1;">No se encontraron productos 😕</p>'; return; }
-  grid.innerHTML = filtered.map(p => `
-    <div class="product-card" id="pc-${p.id}">
-      <div class="product-img emoji">${p.emoji}</div>
-      <div class="product-info">
-        ${p.tag ? `<span class="product-tag ${p.tag}">${p.tag === 'oferta' ? '🔥 Oferta' : p.tag}</span>` : ''}
-        <div class="product-name">${p.name}</div>
-        <div class="product-unit">${p.unit}</div>
-        <div class="product-bottom">
-          <span class="product-price">${formatPrice(p.price)}</span>
-          <button class="add-btn" onclick="addToCart(${p.id})">+</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
+        cartItemsDiv.innerHTML = '';
+        let total = 0;
+        carrito.forEach((item, index) => {
+            total += item.precio;
+            cartItemsDiv.innerHTML += `
+                <div class="cart-item">
+                    ${item.nombre} - $${item.precio}
+                    <button onclick="eliminarDelCarrito(${index})">❌</button>
+                </div>
+            `;
+        });
+        cartTotalSpan.innerText = total;
+        cartCountSpan.innerText = carrito.length;
+    }
 
-function filterCat(cat, btn){
-  currentCat = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderProducts();
-}
+    function eliminarDelCarrito(index) {
+        carrito.splice(index, 1);
+        actualizarCarritoUI();
+    }
 
-function searchProducts(){ searchTerm = document.getElementById('searchInput').value; renderProducts(); }
+    function toggleCart() {
+        document.getElementById('cart-sidebar').classList.toggle('open');
+    }
 
-function addToCart(id){
-  const p = products.find(x => x.id === id);
-  const existing = cart.find(x => x.id === id);
-  if(existing) existing.qty++;
-  else cart.push({...p, qty:1});
-  updateCartBadge();
-  animateAdd(id);
-}
+    // ⭐⭐⭐ TU URL DE SHEET.BEST (ya la pongo yo por ti) ⭐⭐⭐
+    const SHEET_BEST_URL = "https://api.sheetbest.com/sheets/48b1d4bd-0caf-4bd0-ad2e-27b193cee506";
 
-function animateAdd(id){
-  const card = document.getElementById('pc-' + id);
-  if(card){ card.style.transform = 'scale(1.05)'; setTimeout(() => card.style.transform = '', 200); }
-}
+    function enviarPedido() {
+        if (carrito.length === 0) {
+            alert("🛒 Tu carrito está vacío");
+            return;
+        }
 
-function updateCartBadge(){
-  const total = cart.reduce((a,b) => a + b.qty, 0);
-  document.getElementById('cartBadge').textContent = total;
-}
+        const pedido = {
+            fecha: new Date().toLocaleString(),
+            total: carrito.reduce((sum, item) => sum + item.precio, 0),
+            productos: JSON.stringify(carrito),
+            items: carrito.length
+        };
 
-function openCart(){
-  document.getElementById('cartDrawer').classList.add('active');
-  document.getElementById('overlay').classList.add('active');
-  renderCart();
-}
+        fetch(SHEET_BEST_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pedido)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("✅ ¡Pedido enviado con éxito! Revisa tu Google Sheets.");
+                carrito = [];
+                actualizarCarritoUI();
+                toggleCart();
+                cargarPedidos();
+            } else {
+                alert("⚠️ Error al enviar. Revisa la URL de sheet.best");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("❌ No se pudo conectar. Revisa tu conexión o la URL.");
+        });
+    }
 
-function closeCart(){
-  document.getElementById('cartDrawer').classList.remove('active');
-  document.getElementById('overlay').classList.remove('active');
-}
+    function cargarPedidos() {
+        fetch(SHEET_BEST_URL)
+        .then(response => response.json())
+        .then(data => {
+            const pedidosDiv = document.getElementById('pedidos-lista');
+            const hoyDiv = document.getElementById('pedidos-hoy');
+            
+            if (!data || data.length === 0) {
+                pedidosDiv.innerHTML = "<p>No hay pedidos aún</p>";
+                hoyDiv.innerText = "0";
+                return;
+            }
 
-function renderCart(){
-  const container = document.getElementById('cartItems');
-  if(!cart.length){ container.innerHTML = '<div class="cart-empty"><div class="empty-icon">🛒</div><p>Tu carrito está vacío</p></div>'; document.getElementById('cartTotal').textContent = '$0'; return; }
-  container.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <span class="cart-item-emoji">${item.emoji}</span>
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-price">${formatPrice(item.price * item.qty)}</div>
-        <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
-          <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-  const total = cart.reduce((a,b) => a + b.price * b.qty, 0);
-  document.getElementById('cartTotal').textContent = formatPrice(total + 2500);
-}
+            pedidosDiv.innerHTML = "<h3>Últimos pedidos:</h3>";
+            data.slice(-10).reverse().forEach(pedido => {
+                pedidosDiv.innerHTML += `
+                    <div class="pedido-item">
+                        📅 ${pedido.fecha} | 🛍️ ${pedido.items} productos | 💰 $${pedido.total}
+                    </div>
+                `;
+            });
 
-function changeQty(id, delta){
-  const item = cart.find(x => x.id === id);
-  if(!item) return;
-  item.qty += delta;
-  if(item.qty <= 0) cart = cart.filter(x => x.id !== id);
-  updateCartBadge();
-  renderCart();
-}
+            const hoy = new Date().toLocaleDateString();
+            const pedidosHoy = data.filter(p => p.fecha && p.fecha.startsWith(hoy)).length;
+            hoyDiv.innerText = pedidosHoy;
+        })
+        .catch(error => {
+            console.error("Error cargando pedidos:", error);
+            document.getElementById('pedidos-lista').innerHTML = "<p>Error al cargar pedidos</p>";
+        });
+    }
 
-function openCheckout(){
-  if(!cart.length){ alert('Tu carrito está vacío'); return; }
-  closeCart();
-  document.getElementById('checkoutModal').classList.add('active');
-}
-
-function selectPayment(el, method){
-  document.querySelectorAll('.payment-opt').forEach(o => o.classList.remove('active'));
-  el.classList.add('active');
-  selectedPayment = method;
-}
-
-function handleUpload(input){
-  if(input.files[0]){
-    const area = document.getElementById('uploadArea');
-    area.classList.add('has-file');
-    area.querySelector('.upload-text').textContent = '✅ ' + input.files[0].name;
-  }
-}
-
-function submitOrder(){
-  const name = document.getElementById('clientName').value.trim();
-  const phone = document.getElementById('clientPhone').value.trim();
-  const address = document.getElementById('clientAddress').value.trim();
-  if(!name || !phone || !address){ alert('Por favor completa todos los campos obligatorios'); return; }
-  const total = cart.reduce((a,b) => a + b.price * b.qty, 0);
-  const order = {
-    id: 'MF-' + Date.now().toString().slice(-4),
-    name, phone, address,
-    notes: document.getElementById('clientNotes').value,
-    payment: selectedPayment,
-    items: [...cart],
-    total: total + 2500,
-    status: 'pending',
-    time: new Date().toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'})
-  };
-  orders.push(order);
-  cart = [];
-  updateCartBadge();
-  document.getElementById('checkoutModal').classList.remove('active');
-  document.getElementById('successModal').classList.add('active');
-  updateAdminStats();
-}
-
-function closeSuccess(){
-  document.getElementById('successModal').classList.remove('active');
-}
-
-function openAdmin(){
-  document.getElementById('adminPanel').classList.add('active');
-  renderOrders();
-  updateAdminStats();
-}
-
-function closeAdmin(){ document.getElementById('adminPanel').classList.remove('active'); }
-
-function updateAdminStats(){
-  document.getElementById('statTotal').textContent = orders.length;
-  document.getElementById('statPending').textContent = orders.filter(o => o.status === 'pending').length;
-  const revenue = orders.filter(o => o.status === 'confirmed').reduce((a,b) => a + b.total, 0);
-  document.getElementById('statRevenue').textContent = formatPrice(revenue);
-}
-
-function renderOrders(){
-  const container = document.getElementById('ordersList');
-  if(!orders.length){ container.innerHTML = '<div class="no-orders">No hay pedidos aún 📭</div>'; return; }
-  container.innerHTML = orders.slice().reverse().map(order => `
-    <div class="order-card ${order.status === 'pending' ? 'pending' : ''}" id="order-${order.id}">
-      <div class="order-header">
-        <span class="order-id">#${order.id} — ${order.time}</span>
-        <span class="order-status ${order.status === 'pending' ? 'status-pending' : 'status-confirmed'}">
-          ${order.status === 'pending' ? '⏳ Pendiente' : '✅ Confirmado'}
-        </span>
-      </div>
-      <div class="order-info">
-        <strong>👤 ${order.name}</strong> · 📱 ${order.phone}<br/>
-        📍 ${order.address}<br/>
-        💳 ${order.payment.toUpperCase()}<br/>
-        🛒 ${order.items.map(i => i.name + ' x' + i.qty).join(', ')}<br/>
-        <strong>💰 Total: ${formatPrice(order.total)}</strong>
-      </div>
-      <div class="order-actions">
-        ${order.status === 'pending' ? `<button class="btn-confirm" onclick="confirmOrder('${order.id}')">✅ Confirmar Pago</button>` : ''}
-        <a class="btn-whatsapp" href="https://wa.me/57${order.phone}?text=Hola+${encodeURIComponent(order.name)}!+Tu+pedido+MerkaFast+%23${order.id}+está+en+camino+🚚" target="_blank">💬 WhatsApp</a>
-      </div>
-    </div>
-  `).join('');
-}
-
-function confirmOrder(id){
-  const order = orders.find(o => o.id === id);
-  if(order){ order.status = 'confirmed'; renderOrders(); updateAdminStats(); }
-}
-
-// INIT
-renderProducts();
+    cargarPedidos();
 </script>
 </body>
 </html>
