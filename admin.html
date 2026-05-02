@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MerkaFast - Panel Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #f1f5f9;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            margin-bottom: 1.5rem;
+            color: #16a34a;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            background: #334155;
+            color: white;
+        }
+
+        .login-box button {
+            width: 100%;
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .login-box button:hover {
+            background: #15803d;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* Admin Content */
+        .admin-content {
+            display: none;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: #1e293b;
+            padding: 0.8rem 1.2rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #16a34a;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .order-card {
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .order-id {
+            font-weight: 700;
+            color: #16a34a;
+        }
+
+        .order-date {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .order-info p {
+            color: #cbd5e1;
+        }
+
+        .order-info strong {
+            color: white;
+        }
+
+        .order-products {
+            background: #0f172a;
+            padding: 0.5rem;
+            border-radius: 12px;
+            margin: 0.5rem 0;
+            font-size: 0.8rem;
+        }
+
+        .order-total {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #16a34a;
+            margin: 0.5rem 0;
+        }
+
+        .order-image {
+            margin: 0.5rem 0;
+        }
+
+        .order-image img {
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .order-image img:hover {
+            transform: scale(1.05);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-confirm {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #94a3b8;
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 2rem;
+            color: #94a3b8;
+        }
+
+        /* Modal para imagen */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 0.5rem;
+            }
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Pantalla de login -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-box">
+        <h2>🔐 Panel Admin</h2>
+        <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
+        <button onclick="checkPassword()">Entrar</button>
+        <div id="loginError" class="error-msg"></div>
+    </div>
+</div>
+
+<!-- Contenido admin (oculto hasta login correcto) -->
+<div class="admin-content" id="adminContent">
+    <div class="container">
+        <div class="header">
+            <h1>📊 MerkaFast - Panel de Administración</h1>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalOrders">0</div>
+                    <div class="stat-label">Total Pedidos</div>
+                </div>
+                <button class="logout-btn" onclick="logout()">🚪 Salir</button>
+            </div>
+        </div>
+        <div id="ordersContainer" class="orders-list">
+            <div class="loading">Cargando pedidos...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ver imagen grande -->
+<div class="image-modal" id="imageModal" onclick="closeImageModal()">
+    <img id="modalImage" src="">
+</div>
+
+<script>
+    // ==================== CONFIGURACIÓN ====================
+    const ADMIN_PASSWORD = "33380366";
+    const SHEETS_URL = "https://docs.google.com/spreadsheets/d/1Wz7vqRAYQAJsnxIyqqbfLgCfr-6CKSShZfZGgUtTOew/gviz/tq?tqx=out:json";
+
+    // ==================== FUNCIONES ====================
+    function checkPassword() {
+        const password = document.getElementById('passwordInput').value;
+        if (password === ADMIN_PASSWORD) {
+            // Login exitoso
+            localStorage.setItem('adminLoggedIn', 'true');
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadOrders();
+        } else {
+            document.getElementById('loginError').innerText = 'Contraseña incorrecta';
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('adminLoggedIn');
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('adminContent').style.display = 'none';
+        document.getElementById('passwordInput').value = '';
+    }
+
+    function formatPrice(price) {
+        return '$' + parseInt(price).toLocaleString('es-CO');
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return 'Fecha no disponible';
+        try {
+            const d = new Date(dateStr);
+            return d.toLocaleString('es-CO');
+        } catch(e) {
+            return dateStr;
+        }
+    }
+
+    function openImageModal(imgSrc) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        modalImg.src = imgSrc;
+        modal.classList.add('active');
+    }
+
+    function closeImageModal() {
+        document.getElementById('imageModal').classList.remove('active');
+    }
+
+    async function loadOrders() {
+        const container = document.getElementById('ordersContainer');
+        container.innerHTML = '<div class="loading">Cargando pedidos...</div>';
+        
+        try {
+            // Usar Google Sheets JSON API
+            const response = await fetch(SHEETS_URL);
+            const text = await response.text();
+            // Limpiar el formato JSONP
+            const jsonText = text.substring(47, text.length - 2);
+            const data = JSON.parse(jsonText);
+            
+            const rows = data.table.rows;
+            const headers = data.table.cols.map(col => col.label);
+            
+            if (!rows || rows.length === 0) {
+                container.innerHTML = '<div class="no-orders">No hay pedidos aún 📭</div>';
+                document.getElementById('totalOrders').innerText = '0';
+                return;
+            }
+            
+            // Convertir filas a objetos
+            const orders = rows.map(row => {
+                const obj = {};
+                row.c.forEach((cell, i) => {
+                    obj[headers[i]] = cell ? cell.v : '';
+                });
+                return obj;
+            });
+            
+            // Ordenar del más reciente al más viejo (por fecha descendente)
+            orders.sort((a, b) => {
+                const dateA = new Date(a.fecha);
+                const dateB = new Date(b.fecha);
+                return dateB - dateA;
+            });
+            
+            document.getElementById('totalOrders').innerText = orders.length;
+            
+            // Renderizar pedidos
+            container.innerHTML = orders.map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-id">#${order.id || 'N/A'}</span>
+                        <span class="order-date">📅 ${formatDate(order.fecha)}</span>
+                    </div>
+                    <div class="order-info">
+                        <p><strong>👤 ${order.nombre || 'N/A'}</strong></p>
+                        <p>📱 ${order.telefono || 'N/A'}</p>
+                        <p>📍 ${order.direccion || 'N/A'}</p>
+                        <p>💳 ${order.pago || 'N/A'}</p>
+                    </div>
+                    <div class="order-products">
+                        🛒 <strong>Productos:</strong> ${order.productos || 'N/A'}
+                    </div>
+                    <div class="order-total">
+                        💰 Total: ${formatPrice(order.total)}
+                    </div>
+                    ${order.notas ? `<p style="font-size:0.75rem; color:#94a3b8;">📝 Notas: ${order.notas}</p>` : ''}
+                    ${order.imagen_url ? `
+                        <div class="order-image">
+                            <img src="${order.imagen_url}" alt="Comprobante" onclick="openImageModal('${order.imagen_url}')">
+                        </div>
+                    ` : '<p style="font-size:0.7rem; color:#64748b;">📸 Sin comprobante</p>'}
+                    <div class="order-actions">
+                        <a class="btn-whatsapp" href="https://wa.me/57${order.telefono || '3007918978'}?text=Hola%20${encodeURIComponent(order.nombre || 'cliente')}%2C%20tu%20pedido%20MerkaFast%20%23${order.id}%20está%20confirmado%20🚚" target="_blank">
+                            💬 WhatsApp
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+            
+        } catch (error) {
+            console.error('Error:', error);
+            container.innerHTML = '<div class="no-orders">❌ Error al cargar pedidos. Verifica tu conexión.</div>';
+        }
+    }
+
+    // Verificar si ya estaba logueado al cargar la página
+    if (localStorage.getItem('adminLoggedIn') === 'true') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        loadOrders();
+    }
+
+    // Recargar pedidos cada 30 segundos (auto-actualización)
+    setInterval(() => {
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            loadOrders();
+        }
+    }, 30000);
+</script>
+</body>
+</html>
