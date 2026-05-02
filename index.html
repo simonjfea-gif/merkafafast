@@ -19,7 +19,6 @@
     padding-bottom: 80px;
   }
 
-  /* Header */
   .header {
     background: white;
     padding: 1rem 1.5rem;
@@ -86,7 +85,6 @@
     font-size: 0.75rem;
   }
 
-  /* Hero */
   .hero {
     background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #16a34a 100%);
     color: white;
@@ -105,7 +103,6 @@
     font-size: 0.9rem;
   }
 
-  /* Search */
   .search-container {
     padding: 1rem 1.5rem;
     background: white;
@@ -127,7 +124,6 @@
     box-shadow: 0 0 0 3px rgba(22,163,74,0.1);
   }
 
-  /* Categories */
   .categories {
     padding: 1rem 1.5rem;
     overflow-x: auto;
@@ -154,7 +150,6 @@
     color: white;
   }
 
-  /* Products Grid */
   .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -213,7 +208,6 @@
     transform: scale(1.05);
   }
 
-  /* Cart Drawer */
   .cart-drawer {
     position: fixed;
     top: 0;
@@ -326,7 +320,6 @@
     font-size: 1rem;
   }
 
-  /* Modal */
   .modal-overlay {
     display: none;
     position: fixed;
@@ -427,7 +420,6 @@
     margin-top: 1rem;
   }
 
-  /* Success Modal */
   .success-modal {
     display: none;
     position: fixed;
@@ -454,13 +446,6 @@
     margin: 1rem;
   }
 
-  .success-box h4 {
-    font-size: 1.5rem;
-    color: #16a34a;
-    margin: 1rem 0;
-  }
-
-  /* Admin Toggle */
   .admin-toggle {
     position: fixed;
     bottom: 1rem;
@@ -477,7 +462,6 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   }
 
-  /* Admin Panel */
   .admin-panel {
     display: none;
     position: fixed;
@@ -538,7 +522,6 @@
     margin-top: 0.5rem;
   }
 
-  /* Overlay */
   .overlay {
     display: none;
     position: fixed;
@@ -552,6 +535,12 @@
 
   .overlay.active {
     display: block;
+  }
+
+  @media (max-width: 600px) {
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 </style>
 </head>
@@ -577,10 +566,8 @@
 </div>
 
 <div class="categories" id="categories"></div>
-
 <div class="products-grid" id="productsGrid"></div>
 
-<!-- Cart Drawer -->
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
@@ -589,76 +576,33 @@
   </div>
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-footer">
-    <div class="cart-total">
-      <span>Total + domicilio</span>
-      <span id="cartTotal">$0</span>
-    </div>
+    <div class="cart-total"><span>Total + domicilio</span><span id="cartTotal">$0</span></div>
     <button class="checkout-btn" onclick="openCheckout()">Continuar →</button>
   </div>
 </div>
 
-<!-- Checkout Modal -->
 <div class="modal-overlay" id="checkoutModal">
   <div class="modal">
     <h3>📦 Datos del pedido</h3>
-    <div class="form-group">
-      <label>👤 Nombre completo</label>
-      <input type="text" id="clientName" placeholder="Ej: Juan Pérez">
-    </div>
-    <div class="form-group">
-      <label>📱 WhatsApp</label>
-      <input type="tel" id="clientPhone" placeholder="Ej: 3001234567">
-    </div>
-    <div class="form-group">
-      <label>📍 Dirección</label>
-      <input type="text" id="clientAddress" placeholder="Calle, número, barrio">
-    </div>
-    <div class="form-group">
-      <label>📝 Notas (opcional)</label>
-      <textarea id="clientNotes" rows="2" placeholder="Ej: Casa con portón rojo, entregar antes de 6pm"></textarea>
-    </div>
-    <div class="form-group">
-      <label>💳 Método de pago</label>
-      <div class="payment-options" id="paymentOptions"></div>
-    </div>
-    <div class="form-group">
-      <label>📸 Comprobante de pago</label>
-      <div class="upload-area" id="uploadArea" onclick="document.getElementById('comprobanteFile').click()">
-        <input type="file" id="comprobanteFile" accept="image/*" style="display:none" onchange="handleFileUpload(this)">
-        <div class="upload-text">📷 Toca para subir la foto del comprobante</div>
-      </div>
-    </div>
+    <div class="form-group"><label>👤 Nombre completo</label><input type="text" id="clientName" placeholder="Ej: Juan Pérez"></div>
+    <div class="form-group"><label>📱 WhatsApp</label><input type="tel" id="clientPhone" placeholder="Ej: 3001234567"></div>
+    <div class="form-group"><label>📍 Dirección</label><input type="text" id="clientAddress" placeholder="Calle, número, barrio"></div>
+    <div class="form-group"><label>📝 Notas (opcional)</label><textarea id="clientNotes" rows="2" placeholder="Ej: Casa con portón rojo"></textarea></div>
+    <div class="form-group"><label>💳 Método de pago</label><div class="payment-options" id="paymentOptions"></div></div>
+    <div class="form-group"><label>📸 Comprobante de pago</label><div class="upload-area" id="uploadArea" onclick="document.getElementById('comprobanteFile').click()"><input type="file" id="comprobanteFile" accept="image/*" style="display:none" onchange="handleFileUpload(this)"><div class="upload-text">📷 Toca para subir la foto</div></div></div>
     <button class="submit-btn" onclick="submitOrder()">✅ Confirmar pedido</button>
   </div>
 </div>
 
-<!-- Success Modal -->
-<div class="success-modal" id="successModal">
-  <div class="success-box">
-    <span style="font-size:3rem;">🎉</span>
-    <h4>¡Pedido enviado!</h4>
-    <p>Tu pedido ha sido registrado. En breve recibirás confirmación por WhatsApp.</p>
-    <button class="checkout-btn" style="margin-top:1rem; background:#16a34a;" onclick="closeSuccess()">Aceptar</button>
-  </div>
-</div>
+<div class="success-modal" id="successModal"><div class="success-box"><span style="font-size:3rem;">🎉</span><h4>¡Pedido enviado!</h4><p>Tu pedido ha sido registrado. En breve recibirás confirmación por WhatsApp.</p><button class="checkout-btn" style="margin-top:1rem; background:#16a34a;" onclick="closeSuccess()">Aceptar</button></div></div>
 
-<!-- Admin Toggle & Panel -->
 <button class="admin-toggle" onclick="toggleAdmin()">👑</button>
-<div class="admin-panel" id="adminPanel">
-  <div class="admin-header">
-    <h3>📊 Panel de administración</h3>
-    <button class="close-cart" onclick="toggleAdmin()">✕</button>
-  </div>
-  <div class="admin-body" id="adminBody">
-    <div style="text-align:center; padding:2rem; color:white;">Cargando pedidos...</div>
-  </div>
-</div>
+<div class="admin-panel" id="adminPanel"><div class="admin-header"><h3>📊 Panel de administración</h3><button class="close-cart" onclick="toggleAdmin()">✕</button></div><div class="admin-body" id="adminBody"><div style="text-align:center; padding:2rem; color:white;">Cargando pedidos...</div></div></div>
 
 <script>
-  // ⚡ CONFIGURACIÓN - TU URL DE APPS SCRIPT
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAW5eeD0Y0Bhu2H1CaW4gLZltJki-roBDaO1VUv6iCqlbznDQLN613IRSsXsm7jIteSA/exec";
+  // ⚡ CONFIGURACIÓN - URL CORRECTA DE APPS SCRIPT
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypKmM5lyzcllgkWv0avC_ZWpT_p2X-TYHeRNMfsvInTKjMU5Td3SN6P24DMUglGRcV/exec";
 
-  // ==================== PRODUCTOS ====================
   const products = [
     { id: 1, name: 'Leche Entera 1L', price: 4200, emoji: '🥛', cat: 'lacteos' },
     { id: 2, name: 'Queso Campesino 500g', price: 6800, emoji: '🧀', cat: 'lacteos' },
@@ -680,278 +624,79 @@
   let searchTerm = '';
   let selectedImageBase64 = null;
 
-  // Helper
-  function formatPrice(price) {
-    return '$' + price.toLocaleString('es-CO');
-  }
+  function formatPrice(price) { return '$' + price.toLocaleString('es-CO'); }
 
-  // Render categories
   function renderCategories() {
-    const cats = [
-      { id: 'all', name: 'Todo', icon: '🏪' },
-      { id: 'lacteos', name: 'Lácteos', icon: '🥛' },
-      { id: 'carnes', name: 'Carnes', icon: '🍗' },
-      { id: 'abarrotes', name: 'Abarrotes', icon: '🏬' },
-      { id: 'verduras', name: 'Verduras', icon: '🥬' },
-      { id: 'bebidas', name: 'Bebidas', icon: '🥤' }
-    ];
-    const container = document.getElementById('categories');
-    container.innerHTML = cats.map(cat => `
-      <button class="cat-btn ${currentCat === cat.id ? 'active' : ''}" onclick="filterCat('${cat.id}')">
-        ${cat.icon} ${cat.name}
-      </button>
-    `).join('');
+    const cats = [{ id: 'all', name: 'Todo', icon: '🏪' },{ id: 'lacteos', name: 'Lácteos', icon: '🥛' },{ id: 'carnes', name: 'Carnes', icon: '🍗' },{ id: 'abarrotes', name: 'Abarrotes', icon: '🏬' },{ id: 'verduras', name: 'Verduras', icon: '🥬' },{ id: 'bebidas', name: 'Bebidas', icon: '🥤' }];
+    document.getElementById('categories').innerHTML = cats.map(cat => `<button class="cat-btn ${currentCat === cat.id ? 'active' : ''}" onclick="filterCat('${cat.id}')">${cat.icon} ${cat.name}</button>`).join('');
   }
 
-  // Render products
   function renderProducts() {
-    const filtered = products.filter(p => {
-      const matchCat = currentCat === 'all' || p.cat === currentCat;
-      const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchCat && matchSearch;
-    });
+    const filtered = products.filter(p => (currentCat === 'all' || p.cat === currentCat) && p.name.toLowerCase().includes(searchTerm.toLowerCase()));
     const container = document.getElementById('productsGrid');
-    if (filtered.length === 0) {
-      container.innerHTML = '<div style="text-align:center; padding:2rem;">No hay productos 😢</div>';
-      return;
-    }
-    container.innerHTML = filtered.map(p => `
-      <div class="product-card" onclick="addToCart(${p.id})">
-        <div class="product-emoji">${p.emoji}</div>
-        <div class="product-name">${p.name}</div>
-        <div class="product-price">${formatPrice(p.price)}</div>
-        <button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id})">+</button>
-      </div>
-    `).join('');
+    if (!filtered.length) { container.innerHTML = '<div style="text-align:center; padding:2rem;">No hay productos 😢</div>'; return; }
+    container.innerHTML = filtered.map(p => `<div class="product-card" onclick="addToCart(${p.id})"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-price">${formatPrice(p.price)}</div><button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id})">+</button></div>`).join('');
   }
 
-  function filterCat(cat) {
-    currentCat = cat;
-    renderCategories();
-    renderProducts();
-  }
-
-  function searchProducts() {
-    searchTerm = document.getElementById('searchInput').value;
-    renderProducts();
-  }
-
-  // Cart functions
-  function addToCart(id) {
-    const product = products.find(p => p.id === id);
-    const existing = cart.find(item => item.id === id);
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push({ ...product, qty: 1 });
-    }
-    updateCartUI();
-  }
+  function filterCat(cat) { currentCat = cat; renderCategories(); renderProducts(); }
+  function searchProducts() { searchTerm = document.getElementById('searchInput').value; renderProducts(); }
+  function addToCart(id) { const p = products.find(p => p.id === id); const existing = cart.find(i => i.id === id); if (existing) existing.qty++; else cart.push({ ...p, qty: 1 }); updateCartUI(); }
 
   function updateCartUI() {
     const container = document.getElementById('cartItems');
-    const cartCountSpan = document.getElementById('cartCount');
-    const cartTotalSpan = document.getElementById('cartTotal');
-    const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-    cartCountSpan.innerText = totalQty;
-    if (cart.length === 0) {
-      container.innerHTML = '<div style="text-align:center; padding:2rem;">Carrito vacío 🛒</div>';
-      cartTotalSpan.innerText = formatPrice(0);
-      return;
-    }
-    container.innerHTML = cart.map(item => `
-      <div class="cart-item">
-        <div class="cart-item-info">
-          <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-price">${formatPrice(item.price * item.qty)}</div>
-        </div>
-        <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
-          <span style="min-width:24px; text-align:center;">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
-        </div>
-      </div>
-    `).join('');
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    const total = subtotal + 5000; // domicilio
-    cartTotalSpan.innerText = formatPrice(total);
+    const totalQty = cart.reduce((s,i) => s + i.qty, 0);
+    document.getElementById('cartCount').innerText = totalQty;
+    if (!cart.length) { container.innerHTML = '<div style="text-align:center; padding:2rem;">Carrito vacío 🛒</div>'; document.getElementById('cartTotal').innerText = formatPrice(0); return; }
+    container.innerHTML = cart.map(item => `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><div class="cart-item-price">${formatPrice(item.price * item.qty)}</div></div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button></div></div>`).join('');
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    document.getElementById('cartTotal').innerText = formatPrice(subtotal + 5000);
   }
 
-  function changeQty(id, delta) {
-    const index = cart.findIndex(item => item.id === id);
-    if (index === -1) return;
-    const newQty = cart[index].qty + delta;
-    if (newQty <= 0) {
-      cart.splice(index, 1);
-    } else {
-      cart[index].qty = newQty;
-    }
-    updateCartUI();
-  }
-
-  function openCart() {
-    document.getElementById('cartDrawer').classList.add('open');
-    document.getElementById('overlay').classList.add('active');
-  }
-
-  function closeCart() {
-    document.getElementById('cartDrawer').classList.remove('open');
-    document.getElementById('overlay').classList.remove('active');
-  }
-
-  function openCheckout() {
-    if (cart.length === 0) {
-      alert('Agrega productos al carrito primero');
-      return;
-    }
-    closeCart();
-    document.getElementById('checkoutModal').classList.add('active');
-    renderPaymentOptions();
-  }
-
-  function renderPaymentOptions() {
-    const options = [
-      { id: 'nequi', name: 'Nequi', icon: '💜' },
-      { id: 'daviplata', name: 'Daviplata', icon: '🔴' },
-      { id: 'bancolombia', name: 'Bancolombia', icon: '🟡' }
-    ];
-    const container = document.getElementById('paymentOptions');
-    container.innerHTML = options.map(opt => `
-      <div class="payment-opt ${selectedPayment === opt.id ? 'active' : ''}" onclick="selectPayment('${opt.id}')">
-        ${opt.icon} ${opt.name}
-      </div>
-    `).join('');
-  }
-
-  function selectPayment(method) {
-    selectedPayment = method;
-    renderPaymentOptions();
-  }
-
-  function handleFileUpload(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      selectedImageBase64 = e.target.result;
-      const area = document.getElementById('uploadArea');
-      area.classList.add('has-file');
-      area.querySelector('.upload-text').innerHTML = '✅ Comprobante cargado';
-    };
-    reader.readAsDataURL(file);
-  }
+  function changeQty(id, delta) { const idx = cart.findIndex(i => i.id === id); if (idx === -1) return; const newQty = cart[idx].qty + delta; if (newQty <= 0) cart.splice(idx,1); else cart[idx].qty = newQty; updateCartUI(); }
+  function openCart() { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
+  function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
+  function openCheckout() { if (!cart.length) { alert('Agrega productos al carrito primero'); return; } closeCart(); document.getElementById('checkoutModal').classList.add('active'); renderPaymentOptions(); }
+  function renderPaymentOptions() { const options = [{ id: 'nequi', name: 'Nequi', icon: '💜' },{ id: 'daviplata', name: 'Daviplata', icon: '🔴' },{ id: 'bancolombia', name: 'Bancolombia', icon: '🟡' }]; document.getElementById('paymentOptions').innerHTML = options.map(opt => `<div class="payment-opt ${selectedPayment === opt.id ? 'active' : ''}" onclick="selectPayment('${opt.id}')">${opt.icon} ${opt.name}</div>`).join(''); }
+  function selectPayment(method) { selectedPayment = method; renderPaymentOptions(); }
+  function handleFileUpload(input) { const file = input.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = e => { selectedImageBase64 = e.target.result; const area = document.getElementById('uploadArea'); area.classList.add('has-file'); area.querySelector('.upload-text').innerHTML = '✅ Comprobante cargado'; }; reader.readAsDataURL(file); }
+  function closeSuccess() { document.getElementById('successModal').classList.remove('active'); }
 
   async function submitOrder() {
     const nombre = document.getElementById('clientName').value.trim();
     const telefono = document.getElementById('clientPhone').value.trim();
     const direccion = document.getElementById('clientAddress').value.trim();
     const notas = document.getElementById('clientNotes').value.trim();
-
-    if (!nombre || !telefono || !direccion) {
-      alert('Por favor completa todos los campos obligatorios');
-      return;
-    }
-
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    if (!nombre || !telefono || !direccion) { alert('Por favor completa todos los campos obligatorios'); return; }
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
     const total = subtotal + 5000;
-    const productosResumen = cart.map(item => `${item.name} x${item.qty}`).join(', ');
+    const productosResumen = cart.map(i => `${i.name} x${i.qty}`).join(', ');
     const fecha = new Date().toLocaleString('es-CO');
     const orderId = 'MF-' + Date.now().toString().slice(-6);
-
-    const payload = {
-      id: orderId,
-      fecha: fecha,
-      nombre: nombre,
-      telefono: telefono,
-      direccion: direccion,
-      notas: notas,
-      pago: selectedPayment,
-      productos: productosResumen,
-      total: total,
-      imagen: selectedImageBase64 || ''
-    };
-
+    const payload = { id: orderId, fecha, nombre, telefono, direccion, notas, pago: selectedPayment, productos: productosResumen, total: total, imagen_url: selectedImageBase64 || '' };
+    
     try {
-      const response = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      // Con mode: 'no-cors' no podemos leer la respuesta, pero asumimos éxito
-      console.log('Pedido enviado', payload);
-      
-      // Limpiar carrito y formulario
-      cart = [];
-      selectedImageBase64 = null;
-      updateCartUI();
-      document.getElementById('checkoutModal').classList.remove('active');
-      document.getElementById('clientName').value = '';
-      document.getElementById('clientPhone').value = '';
-      document.getElementById('clientAddress').value = '';
-      document.getElementById('clientNotes').value = '';
-      const uploadArea = document.getElementById('uploadArea');
-      uploadArea.classList.remove('has-file');
-      uploadArea.querySelector('.upload-text').innerHTML = '📷 Toca para subir la foto del comprobante';
-      document.getElementById('comprobanteFile').value = '';
-      document.getElementById('successModal').classList.add('active');
-      
-      // Opcional: enviar por WhatsApp también
-      const whatsappMsg = `🛒 *Nuevo pedido MerkaFast*%0A%0A*Cliente:* ${nombre}%0A*Teléfono:* ${telefono}%0A*Dirección:* ${direccion}%0A*Productos:* ${productosResumen}%0A*Total:* ${formatPrice(total)}%0A*Pago:* ${selectedPayment}%0A*Notas:* ${notas || 'Ninguna'}%0A%0A📸 Adjuntar comprobante al mensaje.`;
-      window.open(`https://wa.me/573007918978?text=${whatsappMsg}`, '_blank');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al enviar el pedido. Revisa tu conexión.');
-    }
-  }
-
-  function closeSuccess() {
-    document.getElementById('successModal').classList.remove('active');
-  }
-
-  // Admin functions
-  async function toggleAdmin() {
-    const panel = document.getElementById('adminPanel');
-    if (panel.classList.contains('active')) {
-      panel.classList.remove('active');
-      return;
-    }
-    panel.classList.add('active');
-    await loadAdminOrders();
-  }
-
-  async function loadAdminOrders() {
-    const container = document.getElementById('adminBody');
-    container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">Cargando pedidos...</div>';
-    try {
-      const response = await fetch(APPS_SCRIPT_URL);
-      const orders = await response.json();
-      if (!orders || orders.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">No hay pedidos aún 📭</div>';
-        return;
+      const response = await fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const result = await response.json();
+      if (result.success) {
+        cart = []; selectedImageBase64 = null; updateCartUI();
+        document.getElementById('checkoutModal').classList.remove('active');
+        document.getElementById('clientName').value = ''; document.getElementById('clientPhone').value = ''; document.getElementById('clientAddress').value = ''; document.getElementById('clientNotes').value = '';
+        const uploadArea = document.getElementById('uploadArea'); uploadArea.classList.remove('has-file'); uploadArea.querySelector('.upload-text').innerHTML = '📷 Toca para subir la foto';
+        document.getElementById('comprobanteFile').value = '';
+        document.getElementById('successModal').classList.add('active');
+        const whatsappMsg = `🛒 *Nuevo pedido MerkaFast*%0A%0A*Cliente:* ${nombre}%0A*Teléfono:* ${telefono}%0A*Dirección:* ${direccion}%0A*Productos:* ${productosResumen}%0A*Total:* ${formatPrice(total)}%0A*Pago:* ${selectedPayment}%0A*Notas:* ${notas || 'Ninguna'}%0A%0A📸 Adjuntar comprobante al mensaje.`;
+        window.open(`https://wa.me/573007918978?text=${whatsappMsg}`, '_blank');
+      } else {
+        alert('Error: ' + (result.error || 'No se pudo guardar'));
       }
-      container.innerHTML = orders.slice().reverse().map(order => `
-        <div class="order-card">
-          <h4>#${order.id} - ${order.fecha}</h4>
-          <p><strong>👤 ${order.nombre}</strong> | 📱 ${order.telefono}</p>
-          <p>📍 ${order.direccion}</p>
-          <p>🛒 ${order.productos}</p>
-          <p>💰 Total: ${formatPrice(parseInt(order.total) || 0)}</p>
-          <p>💳 ${order.pago}</p>
-          ${order.imagen_url ? `<img src="${order.imagen_url}" class="order-img" onclick="window.open('${order.imagen_url}')">` : '<p>📸 Sin comprobante</p>'}
-          <button class="btn-confirm" onclick="alert('Marca como pagado en WhatsApp')">✅ Confirmar</button>
-        </div>
-      `).join('');
-    } catch (error) {
-      console.error(error);
-      container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">Error al cargar pedidos</div>';
-    }
+    } catch (error) { console.error('Error:', error); alert('Error al enviar el pedido. Revisa tu conexión.'); }
   }
 
-  // Init
-  renderCategories();
-  renderProducts();
-  updateCartUI();
+  const ADMIN_PASSWORD = "33380366";
+  function toggleAdmin() { const panel = document.getElementById('adminPanel'); if (panel.classList.contains('active')) { panel.classList.remove('active'); } else { const pwd = prompt('🔐 Ingrese la contraseña de administrador:'); if (pwd === ADMIN_PASSWORD) { localStorage.setItem('adminLoggedIn', 'true'); panel.classList.add('active'); loadAdminOrders(); } else { alert('Contraseña incorrecta'); } } }
+  async function loadAdminOrders() { const container = document.getElementById('adminBody'); container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">Cargando pedidos...</div>'; try { const response = await fetch(APPS_SCRIPT_URL); const orders = await response.json(); if (!orders || orders.length === 0) { container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">No hay pedidos aún 📭</div>'; return; } container.innerHTML = orders.slice().reverse().map(order => `<div class="order-card"><h4>#${order.id} - ${order.fecha}</h4><p><strong>👤 ${order.nombre}</strong> | 📱 ${order.telefono}</p><p>📍 ${order.direccion}</p><p>🛒 ${order.productos}</p><p>💰 Total: ${formatPrice(order.total)}</p><p>💳 ${order.pago}</p>${order.imagen_url ? `<img src="${order.imagen_url}" class="order-img" onclick="window.open('${order.imagen_url}')">` : '<p>📸 Sin comprobante</p>'}<button class="btn-confirm" onclick="alert('Marca como pagado en WhatsApp')">✅ Confirmar</button></div>`).join(''); } catch (error) { console.error(error); container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">Error al cargar pedidos</div>'; } }
+
+  renderCategories(); renderProducts(); updateCartUI();
 </script>
 </body>
 </html>
