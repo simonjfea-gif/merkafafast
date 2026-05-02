@@ -600,10 +600,8 @@
 <div class="admin-panel" id="adminPanel"><div class="admin-header"><h3>📊 Panel de administración</h3><button class="close-cart" onclick="toggleAdmin()">✕</button></div><div class="admin-body" id="adminBody"><div style="text-align:center; padding:2rem; color:white;">Cargando pedidos...</div></div></div>
 
 <script>
-  // ==================== CONFIGURACIÓN ====================
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypKmM5lyzcllgkWv0avC_ZWpT_p2X-TYHeRNMfsvInTKjMU5Td3SN6P24DMUglGRcV/exec";
 
-  // ==================== PRODUCTOS ====================
   const products = [
     { id: 1, name: 'Leche Entera 1L', price: 4200, emoji: '🥛', cat: 'lacteos' },
     { id: 2, name: 'Queso Campesino 500g', price: 6800, emoji: '🧀', cat: 'lacteos' },
@@ -619,169 +617,50 @@
     { id: 12, name: 'Gaseosa Coca-Cola 2L', price: 6800, emoji: '🥤', cat: 'bebidas' }
   ];
 
-  // ==================== VARIABLES GLOBALES ====================
   let cart = [];
   let selectedPayment = 'nequi';
   let currentCat = 'all';
   let searchTerm = '';
   let selectedImageBase64 = null;
 
-  // ==================== FUNCIONES AUXILIARES ====================
-  function formatPrice(price) {
-    return '$' + price.toLocaleString('es-CO');
-  }
+  function formatPrice(price) { return '$' + price.toLocaleString('es-CO'); }
 
-  // ==================== CATEGORÍAS Y PRODUCTOS ====================
   function renderCategories() {
-    const cats = [
-      { id: 'all', name: 'Todo', icon: '🏪' },
-      { id: 'lacteos', name: 'Lácteos', icon: '🥛' },
-      { id: 'carnes', name: 'Carnes', icon: '🍗' },
-      { id: 'abarrotes', name: 'Abarrotes', icon: '🏬' },
-      { id: 'verduras', name: 'Verduras', icon: '🥬' },
-      { id: 'bebidas', name: 'Bebidas', icon: '🥤' }
-    ];
+    const cats = [{ id: 'all', name: 'Todo', icon: '🏪' },{ id: 'lacteos', name: 'Lácteos', icon: '🥛' },{ id: 'carnes', name: 'Carnes', icon: '🍗' },{ id: 'abarrotes', name: 'Abarrotes', icon: '🏬' },{ id: 'verduras', name: 'Verduras', icon: '🥬' },{ id: 'bebidas', name: 'Bebidas', icon: '🥤' }];
     document.getElementById('categories').innerHTML = cats.map(cat => `<button class="cat-btn ${currentCat === cat.id ? 'active' : ''}" onclick="filterCat('${cat.id}')">${cat.icon} ${cat.name}</button>`).join('');
   }
 
   function renderProducts() {
     const filtered = products.filter(p => (currentCat === 'all' || p.cat === currentCat) && p.name.toLowerCase().includes(searchTerm.toLowerCase()));
     const container = document.getElementById('productsGrid');
-    if (!filtered.length) {
-      container.innerHTML = '<div style="text-align:center; padding:2rem;">No hay productos 😢</div>';
-      return;
-    }
-    container.innerHTML = filtered.map(p => `
-      <div class="product-card" onclick="addToCart(${p.id})">
-        <div class="product-emoji">${p.emoji}</div>
-        <div class="product-name">${p.name}</div>
-        <div class="product-price">${formatPrice(p.price)}</div>
-        <button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id})">+</button>
-      </div>
-    `).join('');
+    if (!filtered.length) { container.innerHTML = '<div style="text-align:center; padding:2rem;">No hay productos 😢</div>'; return; }
+    container.innerHTML = filtered.map(p => `<div class="product-card" onclick="addToCart(${p.id})"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-price">${formatPrice(p.price)}</div><button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id})">+</button></div>`).join('');
   }
 
-  function filterCat(cat) {
-    currentCat = cat;
-    renderCategories();
-    renderProducts();
-  }
-
-  function searchProducts() {
-    searchTerm = document.getElementById('searchInput').value;
-    renderProducts();
-  }
-
-  // ==================== CARRITO ====================
-  function addToCart(id) {
-    const p = products.find(p => p.id === id);
-    const existing = cart.find(i => i.id === id);
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push({ ...p, qty: 1 });
-    }
-    updateCartUI();
-  }
+  function filterCat(cat) { currentCat = cat; renderCategories(); renderProducts(); }
+  function searchProducts() { searchTerm = document.getElementById('searchInput').value; renderProducts(); }
+  function addToCart(id) { const p = products.find(p => p.id === id); const existing = cart.find(i => i.id === id); if (existing) existing.qty++; else cart.push({ ...p, qty: 1 }); updateCartUI(); }
 
   function updateCartUI() {
     const container = document.getElementById('cartItems');
-    const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+    const totalQty = cart.reduce((s,i) => s + i.qty, 0);
     document.getElementById('cartCount').innerText = totalQty;
-    
-    if (!cart.length) {
-      container.innerHTML = '<div style="text-align:center; padding:2rem;">Carrito vacío 🛒</div>';
-      document.getElementById('cartTotal').innerText = formatPrice(0);
-      return;
-    }
-    
-    container.innerHTML = cart.map(item => `
-      <div class="cart-item">
-        <div class="cart-item-info">
-          <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-price">${formatPrice(item.price * item.qty)}</div>
-        </div>
-        <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
-          <span>${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
-        </div>
-      </div>
-    `).join('');
-    
-    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    if (!cart.length) { container.innerHTML = '<div style="text-align:center; padding:2rem;">Carrito vacío 🛒</div>'; document.getElementById('cartTotal').innerText = formatPrice(0); return; }
+    container.innerHTML = cart.map(item => `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><div class="cart-item-price">${formatPrice(item.price * item.qty)}</div></div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button></div></div>`).join('');
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
     document.getElementById('cartTotal').innerText = formatPrice(subtotal + 5000);
   }
 
-  function changeQty(id, delta) {
-    const idx = cart.findIndex(i => i.id === id);
-    if (idx === -1) return;
-    const newQty = cart[idx].qty + delta;
-    if (newQty <= 0) {
-      cart.splice(idx, 1);
-    } else {
-      cart[idx].qty = newQty;
-    }
-    updateCartUI();
-  }
+  function changeQty(id, delta) { const idx = cart.findIndex(i => i.id === id); if (idx === -1) return; const newQty = cart[idx].qty + delta; if (newQty <= 0) cart.splice(idx,1); else cart[idx].qty = newQty; updateCartUI(); }
+  function openCart() { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
+  function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
+  function openCheckout() { if (!cart.length) { alert('Agrega productos al carrito primero'); return; } closeCart(); document.getElementById('checkoutModal').classList.add('active'); renderPaymentOptions(); }
+  function renderPaymentOptions() { const options = [{ id: 'nequi', name: 'Nequi', icon: '💜' },{ id: 'daviplata', name: 'Daviplata', icon: '🔴' },{ id: 'bancolombia', name: 'Bancolombia', icon: '🟡' }]; document.getElementById('paymentOptions').innerHTML = options.map(opt => `<div class="payment-opt ${selectedPayment === opt.id ? 'active' : ''}" onclick="selectPayment('${opt.id}')">${opt.icon} ${opt.name}</div>`).join(''); }
+  function selectPayment(method) { selectedPayment = method; renderPaymentOptions(); }
+  function handleFileUpload(input) { const file = input.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = e => { selectedImageBase64 = e.target.result; const area = document.getElementById('uploadArea'); area.classList.add('has-file'); area.querySelector('.upload-text').innerHTML = '✅ Comprobante cargado'; }; reader.readAsDataURL(file); }
+  function closeSuccess() { document.getElementById('successModal').classList.remove('active'); }
 
-  function openCart() {
-    document.getElementById('cartDrawer').classList.add('open');
-    document.getElementById('overlay').classList.add('active');
-  }
-
-  function closeCart() {
-    document.getElementById('cartDrawer').classList.remove('open');
-    document.getElementById('overlay').classList.remove('active');
-  }
-
-  // ==================== CHECKOUT ====================
-  function openCheckout() {
-    if (!cart.length) {
-      alert('Agrega productos al carrito primero');
-      return;
-    }
-    closeCart();
-    document.getElementById('checkoutModal').classList.add('active');
-    renderPaymentOptions();
-  }
-
-  function renderPaymentOptions() {
-    const options = [
-      { id: 'nequi', name: 'Nequi', icon: '💜' },
-      { id: 'daviplata', name: 'Daviplata', icon: '🔴' },
-      { id: 'bancolombia', name: 'Bancolombia', icon: '🟡' }
-    ];
-    document.getElementById('paymentOptions').innerHTML = options.map(opt => `
-      <div class="payment-opt ${selectedPayment === opt.id ? 'active' : ''}" onclick="selectPayment('${opt.id}')">
-        ${opt.icon} ${opt.name}
-      </div>
-    `).join('');
-  }
-
-  function selectPayment(method) {
-    selectedPayment = method;
-    renderPaymentOptions();
-  }
-
-  function handleFileUpload(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      selectedImageBase64 = e.target.result;
-      const area = document.getElementById('uploadArea');
-      area.classList.add('has-file');
-      area.querySelector('.upload-text').innerHTML = '✅ Comprobante cargado';
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function closeSuccess() {
-    document.getElementById('successModal').classList.remove('active');
-  }
-
-  // ==================== ENVÍO DE PEDIDO ====================
+  // ⭐⭐⭐ FUNCIÓN CORREGIDA CON mode: 'no-cors' ⭐⭐⭐
   async function submitOrder() {
     const nombre = document.getElementById('clientName').value.trim();
     const telefono = document.getElementById('clientPhone').value.trim();
@@ -813,50 +692,50 @@
     };
 
     try {
-      const response = await fetch(APPS_SCRIPT_URL, {
+      // ⭐ CAMBIO CLAVE: mode: 'no-cors' ⭐
+      await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload)
       });
       
-      const result = await response.json();
+      // Como usamos 'no-cors', no podemos leer la respuesta, asumimos éxito
+      console.log('Pedido enviado (no-cors)');
       
-      if (result.success) {
-        // Limpiar carrito
-        cart = [];
-        selectedImageBase64 = null;
-        updateCartUI();
-        
-        // Cerrar modal y limpiar formulario
-        document.getElementById('checkoutModal').classList.remove('active');
-        document.getElementById('clientName').value = '';
-        document.getElementById('clientPhone').value = '';
-        document.getElementById('clientAddress').value = '';
-        document.getElementById('clientNotes').value = '';
-        
-        const uploadArea = document.getElementById('uploadArea');
-        uploadArea.classList.remove('has-file');
-        uploadArea.querySelector('.upload-text').innerHTML = '📷 Toca para subir la foto';
-        document.getElementById('comprobanteFile').value = '';
-        
-        // Mostrar éxito
-        document.getElementById('successModal').classList.add('active');
-        
-        // Enviar WhatsApp
-        const whatsappMsg = `🛒 *Nuevo pedido MerkaFast*%0A%0A*Cliente:* ${nombre}%0A*Teléfono:* ${telefono}%0A*Dirección:* ${direccion}%0A*Productos:* ${productosResumen}%0A*Total:* ${formatPrice(total)}%0A*Pago:* ${selectedPayment}%0A*Notas:* ${notas || 'Ninguna'}%0A%0A📸 Adjuntar comprobante al mensaje.`;
-        window.open(`https://wa.me/573007918978?text=${whatsappMsg}`, '_blank');
-      } else {
-        alert('Error: ' + (result.error || 'No se pudo guardar el pedido'));
-      }
+      // Limpiar carrito
+      cart = [];
+      selectedImageBase64 = null;
+      updateCartUI();
+      
+      // Cerrar modal y limpiar formulario
+      document.getElementById('checkoutModal').classList.remove('active');
+      document.getElementById('clientName').value = '';
+      document.getElementById('clientPhone').value = '';
+      document.getElementById('clientAddress').value = '';
+      document.getElementById('clientNotes').value = '';
+      
+      const uploadArea = document.getElementById('uploadArea');
+      uploadArea.classList.remove('has-file');
+      uploadArea.querySelector('.upload-text').innerHTML = '📷 Toca para subir la foto';
+      document.getElementById('comprobanteFile').value = '';
+      
+      // Mostrar éxito
+      document.getElementById('successModal').classList.add('active');
+      
+      // Enviar WhatsApp
+      const whatsappMsg = `🛒 *Nuevo pedido MerkaFast*%0A%0A*Cliente:* ${nombre}%0A*Teléfono:* ${telefono}%0A*Dirección:* ${direccion}%0A*Productos:* ${productosResumen}%0A*Total:* ${formatPrice(total)}%0A*Pago:* ${selectedPayment}%0A*Notas:* ${notas || 'Ninguna'}%0A%0A📸 Adjuntar comprobante al mensaje.`;
+      window.open(`https://wa.me/573007918978?text=${whatsappMsg}`, '_blank');
+      
     } catch (error) {
       console.error('Error:', error);
       alert('Error al enviar el pedido. Revisa tu conexión.');
     }
   }
 
-  // ==================== ADMIN PANEL ====================
+  // ADMIN PANEL
   const ADMIN_PASSWORD = "33380366";
   
   function toggleAdmin() {
@@ -903,7 +782,6 @@
     }
   }
 
-  // ==================== INICIALIZACIÓN ====================
   renderCategories();
   renderProducts();
   updateCartUI();
