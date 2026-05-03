@@ -6,6 +6,331 @@
   <title>MerkaFast – Tu mercado en Sasaima</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #0f172a; padding-bottom: 80px; }
+    .header { background: white; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); }
+    .logo { display: flex; align-items: baseline; gap: 8px; }
+    .logo h1 { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #dc2626, #16a34a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .logo span { font-size: 0.75rem; background: #16a34a; color: white; padding: 2px 10px; border-radius: 30px; font-weight: 600; }
+    .cart-btn { background: #1e293b; border: none; color: white; padding: 0.5rem 1.3rem; border-radius: 40px; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s; }
+    .cart-btn:hover { background: #dc2626; transform: scale(1.02); }
+    .cart-count { background: #dc2626; color: white; border-radius: 30px; padding: 2px 8px; font-size: 0.75rem; font-weight: 700; margin-left: 4px; }
+    .hero { background: linear-gradient(135deg, #dc2626, #b91c1c, #16a34a); color: white; padding: 2rem 1.5rem; text-align: center; }
+    .hero h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero p { opacity: 0.9; font-size: 0.9rem; }
+    .search-container { padding: 1rem 1.5rem; background: white; border-bottom: 1px solid #e2e8f0; }
+    .search-container input { width: 100%; padding: 0.8rem 1rem; border: 1px solid #e2e8f0; border-radius: 50px; font-size: 0.9rem; outline: none; }
+    .search-container input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
+    .categories { padding: 1rem 1.5rem; overflow-x: auto; white-space: nowrap; background: white; border-bottom: 1px solid #e2e8f0; scrollbar-width: thin; }
+    .cat-btn { display: inline-block; background: #f1f5f9; border: none; padding: 0.5rem 1.2rem; border-radius: 40px; margin-right: 0.6rem; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .cat-btn.active { background: #16a34a; color: white; box-shadow: 0 2px 8px rgba(22,163,74,0.2); }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 1rem; padding: 1.5rem; max-width: 1300px; margin: 0 auto; }
+    .product-card { background: white; border-radius: 20px; padding: 1rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; transition: all 0.2s; cursor: pointer; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+    .product-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .product-name { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.25rem; color: #0f172a; }
+    .product-price { color: #16a34a; font-weight: 700; font-size: 1rem; margin: 0.3rem 0; }
+    .add-btn { background: #dc2626; color: white; border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; margin-top: 0.5rem; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+    .add-btn:hover { background: #b91c1c; transform: scale(1.05); }
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 950; }
+    .overlay.active { display: block; }
+    .cart-drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh; background: white; box-shadow: -2px 0 20px rgba(0,0,0,0.1); z-index: 1000; transition: right 0.3s ease; display: flex; flex-direction: column; overflow-y: auto; }
+    .cart-drawer.open { right: 0; }
+    .cart-header { padding: 1.5rem; border-bottom: 2px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; }
+    .cart-header h3 { font-size: 1.2rem; font-weight: 700; }
+    .close-cart { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; }
+    .cart-items { flex: 1; padding: 1rem 1.5rem; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid #e2e8f0; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-weight: 600; font-size: 0.9rem; }
+    .cart-item-price { color: #16a34a; font-weight: 600; font-size: 0.8rem; }
+    .cart-item-qty { display: flex; align-items: center; gap: 10px; }
+    .qty-btn { background: #f1f5f9; border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+    .cart-footer { padding: 1.5rem; border-top: 2px solid #e2e8f0; background: white; }
+    .cart-total { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; }
+    .checkout-btn { width: 100%; background: #16a34a; color: white; border: none; padding: 0.9rem; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+    .checkout-btn:hover { background: #15803d; transform: scale(1.01); }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1100; justify-content: center; align-items: flex-end; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: white; width: 100%; max-width: 500px; border-radius: 28px 28px 0 0; padding: 1.8rem; max-height: 85vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1.2rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; color: #334155; }
+    .form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 14px; font-family: inherit; font-size: 0.9rem; transition: 0.2s; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
+    .payment-options { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .payment-opt { flex: 1; border: 1px solid #e2e8f0; border-radius: 16px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; background: white; }
+    .payment-opt.active { border-color: #16a34a; background: #f0fdf4; box-shadow: 0 2px 8px rgba(22,163,74,0.1); }
+    .payment-opt .pay-icon { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .payment-opt span:last-child { font-size: 0.75rem; font-weight: 600; color: #334155; }
+    .upload-area { border: 2px dashed #cbd5e1; border-radius: 16px; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.2s; margin: 10px 0 5px; background: #f8fafc; }
+    .upload-area.has-file { border-color: #16a34a; background: #f0fdf4; }
+    .upload-text { font-size: 0.8rem; color: #475569; }
+    .submit-btn { width: 100%; background: #dc2626; color: white; border: none; padding: 1rem; border-radius: 50px; font-weight: 800; font-size: 1rem; cursor: pointer; margin-top: 1.2rem; transition: 0.2s; }
+    .submit-btn:hover { background: #b91c1c; transform: scale(1.01); }
+    .success-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1200; justify-content: center; align-items: center; }
+    .success-modal.active { display: flex; }
+    .success-box { background: white; border-radius: 28px; padding: 2rem; text-align: center; max-width: 320px; margin: 1rem; }
+    .admin-toggle { position: fixed; bottom: 1rem; left: 1rem; background: #1e293b; color: white; border: none; width: 48px; height: 48px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; z-index: 90; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: 0.2s; }
+    .admin-toggle:hover { background: #16a34a; transform: scale(1.05); }
+    .admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 1300; overflow-y: auto; }
+    .admin-panel.active { display: block; }
+    .admin-header { background: #16a34a; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; }
+    .admin-body { padding: 1rem; max-width: 900px; margin: 0 auto; }
+    .order-card { background: #1e293b; border-radius: 20px; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #16a34a; }
+    .order-card h4 { color: white; margin-bottom: 0.5rem; font-weight: 700; }
+    .order-img { max-width: 80px; border-radius: 12px; margin-top: 0.5rem; cursor: pointer; border: 1px solid #334155; }
+    .btn-confirm { background: #16a34a; color: white; border: none; padding: 0.4rem 1rem; border-radius: 40px; cursor: pointer; margin-top: 0.5rem; font-weight: 600; font-size: 0.8rem; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 1.5rem; margin-top: 2rem; font-size: 0.8rem; border-top: 1px solid #1e293b; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <h1>MerkaFast</h1>
+    <span>🚚 Sasaima</span>
+  </div>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 <span id="cartCount">0</span>
+  </button>
+</div>
+
+<div class="hero">
+  <h2>Tu mercado a un clic 🚀</h2>
+  <p>Domicilios a Sasaima y alrededores | Paga con Nequi, Daviplata o Bancolombia</p>
+</div>
+
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="🔍 Buscar productos..." oninput="searchProducts()">
+</div>
+
+<div class="categories" id="categories"></div>
+<div class="products-grid" id="productsGrid"></div>
+
+<footer>
+  <p>MerkaFast – Calidad y confianza en cada compra</p>
+  <p>📞 WhatsApp: 300 791 8978</p>
+</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>🛒 Tu pedido</h3>
+    <button class="close-cart" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total"><span>Total + domicilio 🚚 ($5.000)</span><span id="cartTotal">$0</span></div>
+    <button class="checkout-btn" onclick="openCheckout()">Continuar con el pedido →</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <h3>📦 Completa tus datos</h3>
+    <div class="form-group"><label>👤 Nombre completo</label><input type="text" id="clientName" placeholder="Ej: Juan Pérez"></div>
+    <div class="form-group"><label>📱 WhatsApp</label><input type="tel" id="clientPhone" placeholder="Ej: 3001234567"></div>
+    <div class="form-group"><label>📍 Dirección</label><input type="text" id="clientAddress" placeholder="Calle, número, barrio"></div>
+    <div class="form-group"><label>📝 Notas (opcional)</label><textarea id="clientNotes" rows="2" placeholder="Ej: Casa con portón rojo, entregar antes de 6pm"></textarea></div>
+    <div class="form-group"><label>💳 Selecciona método de pago</label><div class="payment-options" id="paymentOptions"></div></div>
+    <div class="form-group"><label>📸 Comprobante de pago</label><div class="upload-area" id="uploadArea" onclick="document.getElementById('comprobanteFile').click()"><input type="file" id="comprobanteFile" accept="image/*" style="display:none" onchange="handleFileUpload(this)"><div class="upload-text">📷 Toca para subir foto del comprobante</div></div></div>
+    <button class="submit-btn" onclick="submitOrder()">✅ Confirmar pedido</button>
+  </div>
+</div>
+
+<div class="success-modal" id="successModal"><div class="success-box"><span style="font-size:3rem;">🎉</span><h4>¡Pedido enviado!</h4><p>Tu pedido ha sido registrado. Te llegará una confirmación por WhatsApp.</p><button class="checkout-btn" style="margin-top:1rem; background:#16a34a;" onclick="closeSuccess()">Aceptar</button></div></div>
+
+<button class="admin-toggle" onclick="toggleAdmin()">👑</button>
+<div class="admin-panel" id="adminPanel"><div class="admin-header"><h3>📊 Panel de Administración</h3><button class="close-cart" onclick="toggleAdmin()">✕</button></div><div class="admin-body" id="adminBody"><div style="text-align:center; padding:2rem; color:white;">Cargando pedidos...</div></div></div>
+
+<script>
+  // ⭐⭐⭐ URL CORRECTA DE APPS SCRIPT (ACTUALIZADA) ⭐⭐⭐
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8NpuG380RFfQuiuFlT-Q9ysfPWcZ8DvHHD8OTUw0wzN2P-U7kMDmiu-hj0nuy2vdZ/exec";
+  
+  const products = [
+    { id: 1, name: 'Leche Entera 1L', price: 4200, emoji: '🥛', cat: 'lacteos' },
+    { id: 2, name: 'Queso Campesino 500g', price: 6800, emoji: '🧀', cat: 'lacteos' },
+    { id: 3, name: 'Yogurt Alpina 200g', price: 3200, emoji: '🥤', cat: 'lacteos' },
+    { id: 4, name: 'Pechuga de Pollo KG', price: 14800, emoji: '🍗', cat: 'carnes' },
+    { id: 5, name: 'Carne Molida de Res KG', price: 18900, emoji: '🥩', cat: 'carnes' },
+    { id: 6, name: 'Costilla de Cerdo KG', price: 17500, emoji: '🍖', cat: 'carnes' },
+    { id: 7, name: 'Arroz Diana 1kg', price: 4800, emoji: '🍚', cat: 'abarrotes' },
+    { id: 8, name: 'Aceite de Girasol 1L', price: 8900, emoji: '🫒', cat: 'abarrotes' },
+    { id: 9, name: 'Azúcar 1kg', price: 3800, emoji: '🍬', cat: 'abarrotes' },
+    { id: 10, name: 'Frijol Bola Roja 500g', price: 4500, emoji: '🫘', cat: 'abarrotes' },
+    { id: 11, name: 'Tomate Chonto KG', price: 4200, emoji: '🍅', cat: 'verduras' },
+    { id: 12, name: 'Papa Pastusa KG', price: 3800, emoji: '🥔', cat: 'verduras' },
+    { id: 13, name: 'Cebolla Cabezona KG', price: 4500, emoji: '🧅', cat: 'verduras' },
+    { id: 14, name: 'Zanahoria KG', price: 2800, emoji: '🥕', cat: 'verduras' },
+    { id: 15, name: 'Cerveza Club Colombia', price: 3800, emoji: '🍺', cat: 'bebidas' },
+    { id: 16, name: 'Cerveza Águila', price: 3200, emoji: '🍺', cat: 'bebidas' },
+    { id: 17, name: 'Gaseosa Coca-Cola 2L', price: 6800, emoji: '🥤', cat: 'bebidas' },
+    { id: 18, name: 'Agua Cristal 600ml', price: 1800, emoji: '💧', cat: 'bebidas' }
+  ];
+
+  let cart = [];
+  let selectedPayment = 'nequi';
+  let currentCat = 'all';
+  let searchTerm = '';
+  let selectedImageBase64 = null;
+
+  const cuentasBancarias = {
+    nequi: 'Nequi: 305 791 8978',
+    daviplata: 'Daviplata: 300 123 4567',
+    bancolombia: 'Bancolombia: 031-79986-273 (Cuenta de Ahorros)'
+  };
+
+  function formatPrice(price) { return '$' + price.toLocaleString('es-CO'); }
+
+  function renderCategories() {
+    const cats = [
+      { id: 'all', name: 'Todo', icon: '🏪' },
+      { id: 'lacteos', name: 'Lácteos', icon: '🥛' },
+      { id: 'carnes', name: 'Carnes', icon: '🍗' },
+      { id: 'abarrotes', name: 'Abarrotes', icon: '🏬' },
+      { id: 'verduras', name: 'Verduras', icon: '🥬' },
+      { id: 'bebidas', name: 'Bebidas', icon: '🥤' }
+    ];
+    document.getElementById('categories').innerHTML = cats.map(cat => `<button class="cat-btn ${currentCat === cat.id ? 'active' : ''}" onclick="filterCat('${cat.id}')">${cat.icon} ${cat.name}</button>`).join('');
+  }
+
+  function renderProducts() {
+    const filtered = products.filter(p => (currentCat === 'all' || p.cat === currentCat) && p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const container = document.getElementById('productsGrid');
+    if (!filtered.length) { container.innerHTML = '<div style="text-align:center; padding:2rem;">No hay productos 😢</div>'; return; }
+    container.innerHTML = filtered.map(p => `<div class="product-card" onclick="addToCart(${p.id})"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-price">${formatPrice(p.price)}</div><button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id})">+</button></div>`).join('');
+  }
+
+  function filterCat(cat) { currentCat = cat; renderCategories(); renderProducts(); }
+  function searchProducts() { searchTerm = document.getElementById('searchInput').value; renderProducts(); }
+  function addToCart(id) { const p = products.find(p => p.id === id); const existing = cart.find(i => i.id === id); if (existing) existing.qty++; else cart.push({ ...p, qty: 1 }); updateCartUI(); }
+  function updateCartUI() {
+    const container = document.getElementById('cartItems');
+    const totalQty = cart.reduce((s,i) => s + i.qty, 0);
+    document.getElementById('cartCount').innerText = totalQty;
+    if (!cart.length) { container.innerHTML = '<div style="text-align:center; padding:2rem;">Carrito vacío 🛒</div>'; document.getElementById('cartTotal').innerText = formatPrice(0); return; }
+    container.innerHTML = cart.map(item => `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><div class="cart-item-price">${formatPrice(item.price * item.qty)}</div></div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button><span style="min-width:24px;text-align:center;">${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button></div></div>`).join('');
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    document.getElementById('cartTotal').innerText = formatPrice(subtotal + 5000);
+  }
+  function changeQty(id, delta) { const idx = cart.findIndex(i => i.id === id); if (idx === -1) return; const newQty = cart[idx].qty + delta; if (newQty <= 0) cart.splice(idx,1); else cart[idx].qty = newQty; updateCartUI(); }
+  function openCart() { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
+  function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
+  function openCheckout() { if (!cart.length) { alert('Agrega productos al carrito primero'); return; } closeCart(); document.getElementById('checkoutModal').classList.add('active'); renderPaymentOptions(); }
+  function renderPaymentOptions() {
+    const options = [
+      { id: 'nequi', name: 'Nequi', icon: '💜', account: cuentasBancarias.nequi },
+      { id: 'daviplata', name: 'Daviplata', icon: '🔴', account: cuentasBancarias.daviplata },
+      { id: 'bancolombia', name: 'Bancolombia', icon: '🟡', account: cuentasBancarias.bancolombia }
+    ];
+    document.getElementById('paymentOptions').innerHTML = options.map(opt => `<div class="payment-opt ${selectedPayment === opt.id ? 'active' : ''}" onclick="selectPayment('${opt.id}')"><span class="pay-icon">${opt.icon}</span><span>${opt.name}</span><span style="display:block; font-size:0.7rem; color:#16a34a; margin-top:4px;">${opt.account}</span></div>`).join('');
+  }
+  function selectPayment(method) { selectedPayment = method; renderPaymentOptions(); }
+  function handleFileUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => { selectedImageBase64 = e.target.result; document.getElementById('uploadArea').classList.add('has-file'); document.getElementById('uploadArea').querySelector('.upload-text').innerHTML = '✅ Comprobante cargado'; };
+    reader.readAsDataURL(file);
+  }
+  function closeSuccess() { document.getElementById('successModal').classList.remove('active'); }
+
+  async function submitOrder() {
+    const nombre = document.getElementById('clientName').value.trim();
+    const telefono = document.getElementById('clientPhone').value.trim();
+    const direccion = document.getElementById('clientAddress').value.trim();
+    const notas = document.getElementById('clientNotes').value.trim();
+    if (!nombre || !telefono || !direccion) { alert('Completa nombre, teléfono y dirección'); return; }
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    const total = subtotal + 5000;
+    const productosResumen = cart.map(i => `${i.name} x${i.qty}`).join(', ');
+    const fecha = new Date().toLocaleString('es-CO');
+    const orderId = 'MF-' + Date.now().toString().slice(-6);
+    const payload = {
+      id: orderId, fecha, nombre, telefono, direccion, notas,
+      pago: selectedPayment, productos: productosResumen, total: total,
+      imagen_url: selectedImageBase64 || ''
+    };
+    try {
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      if (result.success) {
+        // Limpiar carrito
+        cart = [];
+        selectedImageBase64 = null;
+        updateCartUI();
+        // Limpiar formulario
+        document.getElementById('checkoutModal').classList.remove('active');
+        document.getElementById('clientName').value = '';
+        document.getElementById('clientPhone').value = '';
+        document.getElementById('clientAddress').value = '';
+        document.getElementById('clientNotes').value = '';
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.classList.remove('has-file');
+        uploadArea.querySelector('.upload-text').innerHTML = '📷 Toca para subir la foto';
+        document.getElementById('comprobanteFile').value = '';
+        document.getElementById('successModal').classList.add('active');
+        const accountInfo = cuentasBancarias[selectedPayment] || '';
+        const msg = `🛒 *Nuevo pedido MerkaFast*%0A%0A*Cliente:* ${nombre}%0A*Teléfono:* ${telefono}%0A*Dirección:* ${direccion}%0A*Productos:* ${productosResumen}%0A*Total:* ${formatPrice(total)}%0A*Pago:* ${selectedPayment.toUpperCase()} ${accountInfo}%0A*Notas:* ${notas || 'Ninguna'}%0A%0A📸 *Adjuntar comprobante al mensaje.*`;
+        window.open(`https://wa.me/573007918978?text=${msg}`, '_blank');
+      } else {
+        alert('Error: ' + (result.error || 'No se pudo guardar el pedido'));
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error de conexión: ' + error.message);
+    }
+  }
+
+  const ADMIN_PASSWORD = "33380366";
+  function toggleAdmin() {
+    const panel = document.getElementById('adminPanel');
+    if (panel.classList.contains('active')) panel.classList.remove('active');
+    else {
+      const pwd = prompt('Contraseña de administrador:');
+      if (pwd === ADMIN_PASSWORD) { localStorage.setItem('adminLoggedIn','true'); panel.classList.add('active'); loadAdminOrders(); }
+      else alert('Incorrecta');
+    }
+  }
+  async function loadAdminOrders() {
+    const container = document.getElementById('adminBody');
+    container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">Cargando...</div>';
+    try {
+      const res = await fetch(APPS_SCRIPT_URL);
+      const orders = await res.json();
+      if (!orders || orders.length === 0) { container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">No hay pedidos aún 📭</div>'; return; }
+      container.innerHTML = orders.slice().reverse().map(order => `
+        <div class="order-card">
+          <h4>#${order.id} - ${order.fecha}</h4>
+          <p><strong>👤 ${order.nombre}</strong> | 📱 ${order.telefono}</p>
+          <p>📍 ${order.direccion}</p>
+          <p>🛒 ${order.productos}</p>
+          <p>💰 Total: ${formatPrice(parseInt(order.total) || 0)}</p>
+          <p>💳 ${order.pago}</p>
+          ${order.imagen_url ? `<img src="${order.imagen_url}" class="order-img" onclick="window.open('${order.imagen_url}')">` : '<p>📸 Sin comprobante</p>'}
+          <button class="btn-confirm" onclick="alert('Marca como pagado en WhatsApp')">✅ Confirmar pago</button>
+        </div>
+      `).join('');
+    } catch(e) { container.innerHTML = '<div style="text-align:center; padding:2rem; color:white;">Error al cargar pedidos</div>'; }
+  }
+
+  renderCategories(); renderProducts(); updateCartUI();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>MerkaFast – Tu mercado en Sasaima</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
     /* Estilos modernos y profesionales - Restaurados y mejorados */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
